@@ -137,6 +137,10 @@
             <template v-slot:item.managers="{ item }">
                 <v-chip v-for="(val,i) in item.managers" :key="i" class="primary ma-1" small v-text="val" />
             </template>
+
+            <template v-slot:item.guards="{ item }">
+                <v-chip v-for="(val,i) in item.guards" :key="i" class="primary ma-1" small v-text="val" />
+            </template>
             
             <template v-slot:item.action="{ item }"> 
                 <v-chip @click="editItem(item)" small class="primary">View | Edit</v-chip>
@@ -199,30 +203,24 @@
         check_all_guard_ids : false,
         headers: [
         {
-          text: '#',
-          sortable: true,
-          value: 'id',
+        text: 'project',
+        sortable: true,
+        value: 'project.project_name',
         },
         {
-          text: 'project',
-          sortable: true,
-          value: 'project.project_name',
+        text: 'managers',
+        sortable: true,
+        value: 'managers',
         },
-        //  {
-        //   text: 'managers',
-        //   sortable: true,
-        //   value: 'managers',
-        // },
-        // {
-        //   text: 'users',
-        //   sortable: true,
-        //   value: 'users',
-        // },
-       
         {
-          text: 'created',
-          sortable: true,
-          value: 'created_at',
+        text: 'users',
+        sortable: true,
+        value: 'users',
+        },
+        {
+        text: 'guards',
+        sortable: true,
+        value: 'guards',
         },
          {
           text: 'Action',
@@ -251,14 +249,9 @@
     },
 
     created (){
-        this.$axios.get('/allocation')
-            .then((res) => {
-                this.data = res.data.data;
-            });
-             this.$axios.get('/project')
-            .then((res) => {
-                this.projects = res.data;
-            });
+        this.$axios.get('/allocation').then(res => this.data = res.data.data );
+            
+            
             this.$axios.get(`get_users_by_id/${7}`)
             .then(res => {
             this.guards = res.data.data;
@@ -274,21 +267,19 @@
             this.managers = res.data.data;
             });
 
+            this.getProjects();
+
     },
     methods:{
 
-      validate () {
-        if(this.$refs.form.validate()){
-          alert();
-        }
+      getProjects(){
+          this.$axios.get('/CheckProjectWithAllocation')
+          .then((res) =>  console.log(this.projects  = res.data) );
       },
-
         editItem (item) {
           this.$router.push('/allocations/' + item.id);
         }, 
          deleteItem (item) {
-
-
              confirm('Are you sure you want to delete this item?') && 
               this.$axios.delete('allocation/'+item.id)
             .then((res) => {
@@ -298,6 +289,8 @@
 
               this.snackbar = true;
               this.msg = 'recored has been delete';
+
+              this.getProjects();
             
             });
 
@@ -334,6 +327,20 @@
                   if(res.data.success){
                     this.msg = 'record has been inserted';
                     this.data.unshift(res.data.data); 
+                    this.getProjects();
+
+                    setTimeout(() => location.reload() , 2000);
+
+                    // this.project_id = null;
+                    // this.user_ids = [];
+                    // this.guard_ids = [];                    
+                    // this.manager_ids = [];
+
+                    // this.check_all_user_ids = false;
+                    // this.check_all_manager_ids = false;
+                    // this.check_all_guard_ids = false;
+
+
                   }
                    else{
                     this.msg = 'record cannot insert';
