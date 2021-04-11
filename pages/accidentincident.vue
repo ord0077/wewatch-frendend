@@ -212,7 +212,7 @@
     </template>
     <template v-slot:item.attachment="{ item }">
 
-        <!-- <v-img v-if="item && item.attachment" height="150px" width="150px"  :src="item.attachment">
+        <v-img v-if="item && item.attachment" height="150px" width="150px"  :src="item.attachment">
         <template v-slot:placeholder>
         <v-row
           class="fill-height ma-0"
@@ -226,13 +226,7 @@
           </v-progress-circular>
         </v-row>
 
-       
-      </template>
-      </v-img> -->
-
-         
-
- <v-dialog v-model="dialog1" max-width="800px">
+         <v-dialog v-model="dialog1" max-width="800px">
             <template v-slot:activator="{ on }">
             <div class="pa-5">
                   <v-img v-on="on" height="100px" width="150px" :src="item.attachment"></v-img>
@@ -241,6 +235,14 @@
 
             <v-img height="100%" width="100%"  :src="item.attachment"></v-img>
             </v-dialog> 
+
+       
+      </template>
+      </v-img>
+
+         
+
+
     </template>
 
     
