@@ -5,7 +5,7 @@
             <v-card :to="card.link" :class="card.color" class="pa-2">
             <v-list-item dark>
             <v-list-item-content>
-            <div class="text-center">{{added_zero(card.count)}}</div>
+            <!-- <div class="text-center">{{added_zero(card.count)}}</div> -->
             <div class="text-center" v-text="card.text"></div>
             </v-list-item-content>
             </v-list-item>
