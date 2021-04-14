@@ -24,7 +24,7 @@
         
         this.cards = [
                     {text:'Daily HSE Report',count:res.data.GetDailyHSEReportCount,color:'orange darken-4',link : '/reports/form-hse'},
-                    {text:'Daily Security Report',count:res.data.GetDailySecurityReportCount,color:'info lighten-1',link : '/reports/security'},
+                    {text:'Daily Security Report',count:res.data.GetDailySecurityReportCount,color:'info lighten-1',link : '/reports/form-security'},
                   
 
         ];
