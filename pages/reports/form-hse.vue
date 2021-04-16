@@ -25,7 +25,7 @@
 </v-col>
 
 <v-col cols="12" md="12">
-  <p class="font-weight-bold">Description Donfidential</p>
+  <p class="font-weight-bold">Description Confidential</p>
   <v-textarea v-model="description_confidential" label="write your answer" required></v-textarea>
 </v-col> 
 
