@@ -1,11 +1,21 @@
 <template>
-<v-form  ref="form">
-<v-container>
-<v-card>
-   <center><h1>Recipient</h1></center>
-  <v-col cols="12" md="12">  
-    <p class="font-weight-bold">Project</p>
 
+<v-row>
+  <v-col cols="12">
+    <v-form  ref="form">
+<v-container>
+
+<v-card class="mt-5">
+<v-toolbar flat class="primary" dark>
+   <h3>Allocate email against the project</h3>
+   <v-spacer></v-spacer>
+   <v-btn to="/recipients" color="secondary" small>Email Allocation List</v-btn>
+</v-toolbar>
+
+  
+  <v-col cols="12" md="12">  
+   
+ <!-- <p class="font-weight-bold">Project</p> -->
       <v-autocomplete
       :rules="Rules" 
       v-model="project_id" 
@@ -15,32 +25,28 @@
       item-value="id" 
       single-line 
       auto 
-      label="Project">
+      label="Select Project">
       </v-autocomplete>
   </v-col>
 
  
 
 
-</v-card>
-
-
-<v-card class="mt-5">
-
 <v-col cols="12" md="12">
-<p class="font-weight-bold">Recipient</p>
+<!-- <p class="font-weight-bold">Recipient</p> -->
 
 <v-simple-table>
   <thead>
 
 
 <tr>
-<th> Email </th>
-<th class="primary white--text text-left">
-
-  <v-btn small class="secondary" @click="add_loop8">Add Row <v-icon >mdi-plus</v-icon></v-btn>
-
+<th>
+  Email list of Recipients 
 </th>
+<th>
+    <v-btn align="right" small class="secondary" @click="add_loop8">Add Row <v-icon >mdi-plus</v-icon></v-btn>
+</th>
+
 </tr>
 
 </thead>
@@ -49,7 +55,7 @@
 
 <tr v-for="(l1 , i ) in loop8" :key="i">
 <td>
-<v-text-field v-model="l1.email" :rules="Rules" required label="Enter Email Addrress"></v-text-field>
+<v-text-field v-model="l1.email" :rules="Rules" required label="Enter Email Address"></v-text-field>
 </td>
 <td>
 <v-icon v-if="i > 0" @click="deleteLoop8(i)" color="error">mdi-delete</v-icon>
@@ -61,19 +67,22 @@
 </v-simple-table>
 </v-col>
 
-</v-card>
-
-
-<v-card class="mt-5">
-  <v-col>
-  <v-btn class="primary ma-2" @click="save">Send</v-btn>
+<v-col>
+    <div :class="`${classColor}--text`">{{msg}}</div>
+  <v-btn class="primary" @click="save">Send</v-btn>
 </v-col>
 
+
 </v-card>
+
 
 
 </v-container>
 </v-form>
+  </v-col>
+  <v-col cols="6"></v-col>
+</v-row>
+
 </template>
 <script>
 export default {
@@ -82,6 +91,9 @@ data: () => ({
         project_id :"",
         loop8 : [{email : ''}],
         projects : [],
+        exists : [],
+        msg : '',
+        classColor : '',
   
         Rules: [
           v => !!v || 'This field is required',
@@ -111,7 +123,20 @@ methods : {
 
         };
                 
-        this.$axios.post('recipient',payload).then(res => console.log(res.data.data));
+        this.$axios.post('recipient',payload).then(res => {
+          if(res.data.success){
+              this.msg = 'record has been added';
+              this.classColor = 'success';
+          }
+          else if(res.data.exists){
+            this.msg = 'record/records exists already';
+            this.classColor = 'error';
+            this.exists = res.data.exists;
+          }
+        });
+
+
+        setTimeout(() => this.msg = '', 3000);
       }
 
 },
