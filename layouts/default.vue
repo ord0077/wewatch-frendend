@@ -166,7 +166,7 @@ export default {
         {
           icon: 'mdi-chart-bubble',
           text:'Email Allocation',
-          to: '/recipients'
+          to: '/recipients/add_recipients'
         },
         // {
         //   icon: 'mdi-chart-bubble',

@@ -55,7 +55,7 @@
 
 <tr v-for="(l1 , i ) in loop8" :key="i">
 <td>
-<v-text-field v-model="l1.email" :rules="Rules" required label="Enter Email Address"></v-text-field>
+<v-text-field type="email" v-model="l1.email" :rules="Rules" required label="Enter Email Address"></v-text-field>
 </td>
 <td>
 <v-icon v-if="i > 0" @click="deleteLoop8(i)" color="error">mdi-delete</v-icon>

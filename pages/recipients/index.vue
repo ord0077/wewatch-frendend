@@ -12,7 +12,7 @@
                   dark
                   class="mb-2 right"
                   >
-                  New Item
+                  New Item 
                   </v-btn>
                   
             </v-toolbar>
@@ -21,6 +21,23 @@
         :items="recipientList"
         class="elevation-1"
         >
+        <template v-slot:item.email="props">
+        <v-edit-dialog
+          :return-value.sync="props.item.email"
+          @save="save(props.item)"
+        >
+          {{ props.item.email }}
+          <template v-slot:input>
+            <v-text-field
+              v-model="props.item.email"
+              :rules="[max25chars]"
+              label="Edit"
+              single-line
+              counter
+            ></v-text-field>
+          </template>
+        </v-edit-dialog>
+      </template>
             <template  v-slot:top>
             <v-autocomplete
             class="pa-3"
@@ -53,7 +70,25 @@
         </v-btn>
         </template>
         </v-data-table>
-              
+              <v-snackbar
+      v-model="snack"
+      :timeout="3000"
+      :color="snackColor"
+    >
+      {{ snackText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          small
+          v-bind="attrs"
+          text
+          class="secondary"
+          @click="snack = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
               
            </v-container>
 </template>
@@ -64,6 +99,13 @@
       project_id : '',
       dialog: false,
       dialogDelete: false,
+
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      max25chars: v => v.length <= 25 || 'Input too long!',
+
+
       headers: [
           { text: 'Email', value: 'email' },
           { text: 'Actions', value: 'actions', sortable: false },
@@ -81,20 +123,10 @@
     }),
 
     computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
+     
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-    },
-
+   
     created () {
       this.initialize()
     },
@@ -111,12 +143,7 @@
        .then(res => this.recipientList = res.data);   
       },
 
-      editItem (item) {
-        this.editedIndex = this.recipientList.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
+    
       deleteItem (item) {
        
          confirm('Are you sure you want to delete this item?') && 
@@ -128,7 +155,32 @@
             
             });
       },
-    
+
+       save (currentItem) {
+
+         console.log(currentItem);
+
+
+        this.$axios.put('recipient/' + currentItem.id, { email : currentItem.email }  )
+        .then(res => {
+
+        if(res.data.success){
+          this.snack = true
+          this.snackColor = 'primary'
+          this.snackText = 'Email has been updated'
+        }
+        else{
+          this.snack = true
+          this.snackColor = 'error'
+          this.snackText = 'Email is not updated'
+        }
+
+        })
+        .catch(err => console.log(err.response.data));
+
+
+      },
+     
     },
   }
 </script>
