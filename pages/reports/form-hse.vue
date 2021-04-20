@@ -9,6 +9,7 @@
       <v-autocomplete
       :rules="Rules" 
       v-model="project_id" 
+      @change="getRecipientList"
       :items="projects" 
       required 
       item-text="project_name" 
@@ -18,6 +19,13 @@
       label="Project">
       </v-autocomplete>
   </v-col>
+
+<v-col cols="12" md="12">
+<p class="font-weight-bold">recipientList</p>
+<div v-for="(rl , i) in recipientList" :key="i">
+  <span class="primary white--text ma-1 row" row x-samll>{{rl.email}}</span>
+</div>
+</v-col>
 
 <v-col cols="12" md="12">
 <p class="font-weight-bold">Current Date</p>
@@ -86,7 +94,7 @@
 <v-text-field v-model="design_build_time" :rules="Rules" required label="write your answer"></v-text-field>
 </td>
 <td>
-<v-text-field v-model="daily_operation_man_hour" :rules="Rules" label="write your answer" required></v-text-field>
+<v-text-field v-model="daily_operation_man_hour" type="number" :rules="Rules" label="write your answer" required></v-text-field>
 </td>
 <td>  
 <v-text-field v-model="design_time_hour_remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
@@ -565,43 +573,7 @@ required
 </v-card>
 
 
-<v-card class="mt-5">
 
-<v-col cols="12" md="12">
-<p class="font-weight-bold">Recipient List</p>
-
-<v-simple-table>
-  <thead>
-
-
-<tr>
-<th> Email </th>
-<th class="primary white--text text-left">
-
-  <v-btn small class="secondary" @click="add_loop8">Add Row <v-icon >mdi-plus</v-icon></v-btn>
-
-</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr v-for="(l1 , i ) in loop8" :key="i">
-<td>
-<v-text-field v-model="l1.email" :rules="Rules" required label="write your answer"></v-text-field>
-</td>
-<td>
-<v-icon v-if="i > 0" @click="deleteLoop8(i)" color="error">mdi-delete</v-icon>
-</td>
-</tr>
-
-</tbody>
-
-</v-simple-table>
-</v-col>
-
-</v-card>
 
 
 <v-card class="mt-5">
@@ -645,7 +617,7 @@ data: () => ({
         loop5 : [{hazard_identify_activites : '', hazard_identify_occurrence : '', hazard_identify_remarks : ''}],
         loop6 : [{near_miss_activites : '', near_miss_occurrence : '1', near_miss_remarks : ''}],
         loop7 : [{covid_compliance_activites : '', covid_compliance_occurrence : '', covid_compliance_remarks : ''}],
-        loop8 : [{email : ''}],
+        // loop8 : [{email : ''}],
 
         today : '',
 
@@ -654,6 +626,7 @@ data: () => ({
         Rules: [
           v => !!v || 'This field is required',
         ],
+        recipientList : []
 
 }),
 
@@ -679,9 +652,9 @@ methods : {
   add_loop7 () {
       this.loop7.push({covid_compliance_activites : '', covid_compliance_occurrence : '', covid_compliance_remarks : ''})
     },
-  add_loop8 () {
-      this.loop8.push({email : ''})
-    },
+  // add_loop8 () {
+  //     this.loop8.push({email : ''})
+  //   },
 
       
 
@@ -692,17 +665,20 @@ methods : {
   deleteLoop5 (i) { this.loop5.splice(i, 1) },
   deleteLoop6 (i) { this.loop6.splice(i, 1) },
   deleteLoop7 (i) { this.loop7.splice(i, 1) },
-  deleteLoop8 (i) { this.loop8.splice(i, 1) },
+  // deleteLoop8 (i) { this.loop8.splice(i, 1) },
+
+  getRecipientList () {
+    this.$axios.get(`recipient/${this.project_id}`)
+      .then(res => console.log(this.recipientList = res.data));
+  },
 
   
   save () {
 
-      if(this.$refs.form.validate()){
+      if(!this.$refs.form.validate()){
 
             var payload = {    
-
-
-              project_id :  this.project_id,
+             project_id :  this.project_id,
               user_id : this.$auth.user.id,
               date : this.today,
               description_confidential : this.description_confidential,
@@ -713,28 +689,28 @@ methods : {
               red_flag : this.red_flag,
               weather : this.weather,
               wind_strength : this.wind_strength,
-              weather_wind_remarks : this.weather_wind_remarks ,
+              weather_wind_remarks : this.weather_wind_remarks,
+
               design_build_time : this.design_build_time,
               daily_operation_man_hour : this.daily_operation_man_hour,
               design_time_hour_remarks : this.design_time_hour_remarks,
-
-              contractors : this.loop1,
-              type_contractors : this.loop2,
 
               total_man_days : this.total_man_days,
               total_man_hours : this.total_man_hours,
               total_lost_work_hours : this.total_lost_work_hours,
 
+              contractors : this.loop1,
+              type_contractors : this.loop2,
               build_activities : this.loop3,
               project_health : this.loop4,
               hazard_identify : this.loop5,
               near_miss_activities : this.loop6,
               covid_compliance : this.loop7,
 
-              emails:this.loop8
+             
         };
                 
-        this.$axios.post('dhr',payload).then(res => console.log(res.data.data));
+        this.$axios.post('dhr',payload).then(res => console.log(res));
       }
 
 },

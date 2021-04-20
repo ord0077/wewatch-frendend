@@ -162,6 +162,12 @@ export default {
           text:'Allocation',
           to: '/allocations'
         },
+
+        {
+          icon: 'mdi-chart-bubble',
+          text:'Recipient',
+          to: '/recipients'
+        },
         // {
         //   icon: 'mdi-chart-bubble',
         //   text:'HSE',
