@@ -127,7 +127,7 @@
 <tbody>
 <tr v-for="(l1 , i ) in loop1" :key="i">
 <td>
-<v-text-field v-model="l1.contractor_name" :rules="Rules" required label="write your answer"></v-text-field>
+<v-text-field v-model="l1.contractors" :rules="Rules" required label="write your answer"></v-text-field>
 </td>
 <td>
 <v-text-field v-model="l1.staff_numbers" type="number"  :rules="Rules" label="write your answer" required></v-text-field>
@@ -578,6 +578,30 @@ required
 
 <v-card class="mt-5">
   <v-col>
+
+    
+<v-snackbar
+      v-model="snackbar"
+      :timeout="4000"
+      :color="snackColor"
+      :top="top"
+    >
+      {{ snackText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+         
+          small
+          v-bind="attrs"
+          text
+          class="secondary"
+          @click="snack = false"
+
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   <v-btn class="primary ma-2" @click="save">Submit</v-btn>
 </v-col>
 
@@ -609,13 +633,13 @@ data: () => ({
         total_man_days : "",
         total_man_hours : "",
         total_lost_work_hours : "",
-  
-        loop1 : [{contractor_name : '', staff_numbers : '', shift_pattern : '', daily_man_hours : '', }],
+     
+        loop1 : [{contractors : '', staff_numbers : '', shift_pattern : '', daily_man_hours : '' }],
         loop2 : [{type_contractors : '', staff_numbers : '', shift_pattern : ''}],
         loop3 : [{activites : '', occurrence : '', remarks : ''}],
         loop4 : [{project_health_activites : '', project_health_occurrence : '', project_health_remarks : ''}],
         loop5 : [{hazard_identify_activites : '', hazard_identify_occurrence : '', hazard_identify_remarks : ''}],
-        loop6 : [{near_miss_activites : '', near_miss_occurrence : '1', near_miss_remarks : ''}],
+        loop6 : [{near_miss_activites : '', near_miss_occurrence : '', near_miss_remarks : ''}],
         loop7 : [{covid_compliance_activites : '', covid_compliance_occurrence : '', covid_compliance_remarks : ''}],
         // loop8 : [{email : ''}],
 
@@ -626,13 +650,19 @@ data: () => ({
         Rules: [
           v => !!v || 'This field is required',
         ],
-        recipientList : []
+        recipientList : [],
+
+        
+        snackbar: false,
+        snackText: '',
+        top:true,
+        snackColor:''
 
 }),
 
 methods : {
   add_loop1 () {
-    this.loop1.push({contractor_name : '', staff_numbers : '', shift_pattern : '', daily_man_hours : '', })
+    this.loop1.push({contractors : '', staff_numbers : '', shift_pattern : '', daily_man_hours : '' })
   },
   add_loop2 () {
     this.loop2.push({type_contractors : '', staff_numbers : '', shift_pattern : ''})
@@ -675,7 +705,7 @@ methods : {
   
   save () {
 
-      if(!this.$refs.form.validate()){
+      if(this.$refs.form.validate()){
 
             var payload = {    
              project_id :  this.project_id,
@@ -700,6 +730,7 @@ methods : {
               total_lost_work_hours : this.total_lost_work_hours,
 
               contractors : this.loop1,
+      
               type_contractors : this.loop2,
               build_activities : this.loop3,
               project_health : this.loop4,
@@ -710,11 +741,30 @@ methods : {
              
         };
                 
-        this.$axios.post('dhr',payload).then(res => console.log(res));
+        this.$axios.post('dhr',payload).then(res => {
+
+            if(res.data.success){
+            this.snackbar = true
+            this.snackColor = 'primary'
+            this.snackText = 'Email has been sent'
+            }
+            else{
+            this.snackbar = true
+            this.snackColor = 'error'
+            this.snackText = 'Email is not sent'
+
+            }
+            });
       }
 
 },
 },
+
+
+
+
+          
+        
 
 created () {
 this.$axios.get('project').then(res => this.projects = res.data);
