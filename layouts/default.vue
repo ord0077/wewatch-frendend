@@ -127,12 +127,12 @@ export default {
         {
           icon: 'mdi-chart-bubble',
           text:'Project Admin',
-          to: '/project_admin',
+          to: '/user/project_admin',
          },
           {
           icon: 'mdi-chart-bubble',
           text:'Client',
-          to: '/client'
+          to: '/user/client'
         },
         {
           icon: 'mdi-chart-bubble',
@@ -143,17 +143,17 @@ export default {
          {
           icon: 'mdi-chart-bubble',
           text:'wewatch Manager',
-          to: '/wewatchmanager'
+          to: '/user/wewatchmanager'
         },
          {
           icon: 'mdi-chart-bubble',
           text:'User',
-          to: '/user'
+          to: '/user/user'
         },
          {
           icon: 'mdi-chart-bubble',
           text:'Security Guards',
-          to: '/security_guard'
+          to: '/user/security_guard'
         },
 
        
@@ -197,11 +197,7 @@ export default {
           text:'Dashboard',
           to: '/'
         },
-         {
-          icon: 'mdi-apps',
-          text:'Inspire',
-          to: '/inspire'
-        },
+        
     ]    
     }
     else if(this.isUser){
@@ -212,11 +208,6 @@ export default {
           to: '/'
         },
        
-        {
-          icon: 'mdi-apps',
-          text:'Inspire',
-          to: '/inspire'
-        },
     ]
     }
     else if(this.isProjectAdmin){

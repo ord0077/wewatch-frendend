@@ -14,14 +14,16 @@
         class="mx-4"
         hide-details v-model="search"></v-text-field>
 
+        <v-btn class="primary" @click="save">Add Data</v-btn>
+
        
 
         <v-dialog v-model="dialog" max-width="900px">
         
           <v-card>
+            
             <v-card-title>
               <span class="headline">{{ formTitle }} {{entity}}</span>
-              
             </v-card-title>
 
             <v-card-text>
@@ -272,7 +274,7 @@
   export default {
     data: () => ({
 
-      entity : 'Accident Incident',  
+       entity : 'Accident Incident',  
        menu: false,
        menu1: false,
        
@@ -358,17 +360,20 @@
       data: [],
       editedIndex: -1,
       editedItem: {
-        attachment : '', 
-        location : '',  
-        reported_date : '', 
+        attachment : 'test', 
+        location : 'test',  
+        reported_date : null, 
         reported_time : null, 
-        category_incident : '', 
-        type_injury : '', 
-        type_incident : '', 
-        other : '', 
-        fatality : '', 
-        describe_incident : '', 
-        immediate_action : '',
+        category_incident : 'test', 
+        type_injury : 'test', 
+        type_incident : 'test', 
+        other : 'test', 
+        fatality : 'test', 
+        describe_incident : 'test', 
+        immediate_action : 'test',
+        user_id : '',
+        project_id : ''
+
       },
     
       errors:[],
@@ -398,7 +403,9 @@
     methods: {
       initialize () {
 
-       this.$axios.get(`accidentincident`).then(res => this.data = res.data);
+       this.$axios.get(`accidentincident`).then(res => console.log(this.data = res.data));
+
+       console.log(this.editedItem);
 
       
       },
@@ -434,40 +441,37 @@
     
 
       save () {
+           
+          let form_data = new FormData();
 
-        console.log(this.editedItem.category_incident);
-
-        //  let form_data = new FormData();
-
-        //  form_data.append('user_id',this.editedItem.user_id);
-        //  form_data.append('project_id',this.editedItem.project_id);
-        //  form_data.append('location',this.editedItem.location);
-        //  form_data.append('reported_date',this.editedItem.reported_date);
-        //  form_data.append('reported_time',this.editedItem.reported_time);
-        //  form_data.append('category_incident',this.editedItem.category_incident);
-        //  form_data.append('type_injury',this.editedItem.type_injury);
-        //  form_data.append('type_incident',this.editedItem.type_incident);
-        //  form_data.append('other',this.editedItem.other);
-        //  form_data.append('fatality',this.editedItem.fatality);
-        //  form_data.append('describe_incident',this.editedItem.describe_incident);
-        //  form_data.append('immediate_action',this.editedItem.immediate_action);
-        //  form_data.append('attachment',this.editedItem.attachment);
+          form_data.append('user_id',this.editedItem.user_id);
+          form_data.append('project_id',this.editedItem.project_id);
+          form_data.append('location',this.editedItem.location);
+          form_data.append('reported_date',this.editedItem.reported_date);
+          form_data.append('reported_time',this.editedItem.reported_time);
+          form_data.append('category_incident',this.editedItem.category_incident);
+          form_data.append('type_injury',this.editedItem.type_injury);
+          form_data.append('type_incident',this.editedItem.type_incident);
+          form_data.append('other',this.editedItem.other);
+          form_data.append('fatality',this.editedItem.fatality);
+          form_data.append('describe_incident',this.editedItem.describe_incident);
+          form_data.append('immediate_action',this.editedItem.immediate_action);
+          form_data.append('attachment',this.editedItem.attachment);
 
           
-        //       this.$axios.put('accidentincident/' + this.editedItem.id,form_data)
-        //       .then((res) => {
+              this.$axios.post('accidentincident/',form_data)
+              .then((res) => {
                    
-        //             if(res.data.success){
-        //               console.log(res.data.data);
-        //               this.data.unshift(res.data.data)
-        //               this.close()
-        //               this.errors = []
-        //               }
-        //               else{
-        //                 this.errors = res.data.errors
-        //                 }
-        //     })
-        //     .catch(err => console.log(this.errors = err.response.data.errors));
+                  if(res.data.success){
+                    console.log(res.data);
+                    this.close()
+                    this.errors = []
+                  }
+                  else{
+                    this.errors = res.data.errors
+                  }
+            })
+            .catch(err => console.log(this.errors = err.response.data.errors));
         }
      
     },

@@ -87,17 +87,18 @@ export default {
    async mounted () {
     this.loaded = false
     try {
-      await this.$axios.get('all')
+      console.log(this.$route.params.id);
+      await this.$axios.get(`count_by_project/${this.$route.params.id}`)
       .then(res => {
         
         this.cards = [
-                    {link : '/accidentincident',text:'Accident Incident Report',count:res.data.GetAccidentIncidentCount,color:'primary',chartColor : 'rgb(45 87 163)'},
-                    {link : '/covid',text:'Covid-19 Report',count:res.data.GetCovidCount,color:'red',chartColor : 'rgb(244 67 54)'},
-                    {link : '/security',text:'Daily Security Report',count:res.data.GetDailySecurityReportCount,color:'info lighten-1',chartColor : 'rgb(75 194 181)'},
-                    {link : '/hse',text:'Daily HSE Report',count:res.data.GetDailyHSEReportCount,color:'orange darken-4', chartColor : 'rgb(230 81 0)'},
-                    {link : '/sitevisitor',text:'Daily Site Visiter Report',count:res.data.GetSiteVisiterRecordCount,color:'brown darken-1',chartColor : 'rgb(109 76 65)'},
-                    {link : '/traininginduction',text:'Training Induction Report',count:res.data.GetTrainingInductionCount,color:'purple',chartColor : 'rgb(156 39 176)'},
-                    {link : '/observation',text:'Observation Report',count:res.data.GetObservationCount,color:'green',chartColor : 'rgb(76 175 80)'},
+                    { link : this.$route.params.id + '/accidentincident',text:'Accident Incident Report',count:res.data.GetAccidentIncidentCount,color:'primary',chartColor : 'rgb(45 87 163)' },
+                    { link : this.$route.params.id + '/covid',text:'Covid-19 Report',count:res.data.GetCovidCount,color:'red',chartColor : 'rgb(244 67 54)' },
+                    { link : this.$route.params.id + '/security',text:'Daily Security Report',count:res.data.GetDailySecurityReportCount,color:'info lighten-1',chartColor : 'rgb(75 194 181)' },
+                    { link : this.$route.params.id + '/hse',text:'Daily HSE Report',count:res.data.GetDailyHSEReportCount,color:'orange darken-4', chartColor : 'rgb(230 81 0)' },
+                    { link : this.$route.params.id + '/sitevisitor',text:'Daily Site Visitor Report',count:res.data.GetSiteVisiterRecordCount,color:'brown darken-1',chartColor : 'rgb(109 76 65)' },
+                    { link : this.$route.params.id + '/traininginduction',text:'Training Induction Report',count:res.data.GetTrainingInductionCount,color:'purple',chartColor : 'rgb(156 39 176)' },
+                    { link : this.$route.params.id + '/observation',text:'Observation Report',count:res.data.GetObservationCount,color:'green',chartColor : 'rgb(76 175 80)' },
                     // {link : '/covid',text:'Daily Man Hours',count:res.data.GetDailyManHoursCount,color:'orange lighten-1',chartColor : 'rgb(255 167 38)'},
                     // {link : '/covid',text:'Lost Work Hours',count:res.data.GetLostWorkHoursCount,color:'brown lighten-1',chartColor : 'rgb(141 110 99)'},
 
