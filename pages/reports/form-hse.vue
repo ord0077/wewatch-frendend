@@ -579,30 +579,8 @@ required
 <v-card class="mt-5">
   <v-col>
 
-    
-<v-snackbar
-      v-model="snackbar"
-      :timeout="4000"
-      :color="snackColor"
-      :top="top"
-    >
-      {{ snackText }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-         
-          small
-          v-bind="attrs"
-          text
-          class="secondary"
-          @click="snack = false"
-
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
-  <v-btn class="primary ma-2" @click="save">Submit</v-btn>
+ 
+  <v-btn :loading="loader" class="primary ma-2" @click="save">Submit</v-btn>
 </v-col>
 
 </v-card>
@@ -653,10 +631,7 @@ data: () => ({
         recipientList : [],
 
         
-        snackbar: false,
-        snackText: '',
-        top:true,
-        snackColor:''
+        loader: false,
 
 }),
 
@@ -697,10 +672,40 @@ methods : {
   deleteLoop7 (i) { this.loop7.splice(i, 1) },
   // deleteLoop8 (i) { this.loop8.splice(i, 1) },
 
+
+
+
+  success(){
+  this.$swal.fire({
+  icon: 'success',
+  title: 'Email has been sent',
+  showConfirmButton: false,
+  timer: 2000
+  })
+
+  },
+  failed(){
+  this.$swal.fire({
+  icon: 'error',
+  title: 'Email not sent',
+  showConfirmButton: false,
+  timer: 2000
+  })
+
+  
+
+  },
+
+
+
   getRecipientList () {
     this.$axios.get(`recipient/${this.project_id}`)
-      .then(res => console.log(this.recipientList = res.data));
+      .then(res => (this.recipientList = res.data));
   },
+
+
+
+
 
   
   save () {
@@ -740,21 +745,14 @@ methods : {
 
              
         };
+
+         this.loader = true;  
                 
         this.$axios.post('dhr',payload).then(res => {
+            res.data.success ? this.success() : this.failed();
+            this.loader = false
 
-            if(res.data.success){
-            this.snackbar = true
-            this.snackColor = 'primary'
-            this.snackText = 'Email has been sent'
-            }
-            else{
-            this.snackbar = true
-            this.snackColor = 'error'
-            this.snackText = 'Email is not sent'
-
-            }
-            });
+          })
       }
 
 },
@@ -768,7 +766,7 @@ methods : {
 
 created () {
 this.$axios.get('project').then(res => this.projects = res.data);
-this.$axios.get('dhr').then(res => console.log(res));
+
 
 
 var today = new Date();

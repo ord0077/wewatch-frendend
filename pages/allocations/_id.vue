@@ -2,7 +2,7 @@
   <v-container>
     
     <v-row>
-                    <div class="text-center">
+                    <!-- <div class="text-center">
 
               <v-snackbar
               color="primary"
@@ -25,7 +25,7 @@
               </v-btn>
               </template>
               </v-snackbar>
-              </div>
+              </div> -->
 
        <v-form ref="form" class="row">       
 
@@ -103,7 +103,7 @@
         cols="12"
         sm="12"
         >
-        <v-btn class="secondary" small @click="submit">Allocate</v-btn>
+        <v-btn  :loading="loader" class="secondary" small @click="submit">Allocate</v-btn>
         <v-btn class="primary" small to="/allocations">Back</v-btn>
         </v-col>
         </v-card>
@@ -141,9 +141,13 @@
         managers : [],
         guards : [],
 
+       
+
         GeneralRules : [
            v => this.guard_ids.length || this.manager_ids.length || this.user_ids.length ? !!v : 'This field is required'
         ],
+
+         loader: false,
 
       }
     },
@@ -195,6 +199,31 @@
         for_manager_ids(){
           this.manager_ids = this.check_all_manager_ids ? this.managers.map(v => v.id) : [] ;
         },
+
+
+         success(){
+        this.$swal.fire({
+        icon: 'success',
+        title: 'Record has been updated',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+        failed(){
+        this.$swal.fire({
+        icon: 'error',
+        title: 'Record cannot update',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+
+
+        
+
+       
        
         submit(){
             let payload = {
@@ -204,23 +233,32 @@
                 manager_ids : this.manager_ids
             };
 
+             this.loader = true; 
             if(this.$refs.form.validate()){
 
 
             this.$axios.put('allocation/' + this.$route.params.id, payload)
             .then(res => {
 
-                    this.msg = '';
+                
+            res.data.success ? this.success() : this.failed();
+            this.loader = false
 
-                    if(res.data.success){
-                      this.msg = 'record has been updated';
-                      this.data.unshift(res.data.data); 
-                    }
-                    else{
-                      this.msg = 'record cannot update';
-                    }
+          
 
-                    this.snackbar = true;
+
+
+                    // this.msg = '';
+
+                    // if(res.data.success){
+                    //   this.msg = 'record has been updated';
+                    //   this.data.unshift(res.data.data); 
+                    // }
+                    // else{
+                    //   this.msg = 'record cannot update';
+                    // }
+
+                    // this.snackbar = true;
           
             })
             .catch(err => console.log(err));

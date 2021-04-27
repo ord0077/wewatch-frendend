@@ -30,7 +30,7 @@
         <v-col cols="12" md="6">
         <v-toolbar dense flat class="primary" dark><b>Allocate for the Project</b>
           <v-spacer></v-spacer>
-          <v-btn class="secondary" small @click="submit">Allocate Users</v-btn>
+          <v-btn :loading="loader" class="secondary" small @click="submit">Allocate Users</v-btn>
          </v-toolbar>
           <v-card class="pa-2">
         <v-form
@@ -144,7 +144,7 @@
             
             <template v-slot:item.action="{ item }"> 
                 <v-chip @click="editItem(item)" small class="primary">View | Edit</v-chip>
-                <v-chip @click="deleteItem(item)" small class="error">Delete</v-chip>            
+                <v-chip :loading="loader"  @click="deleteItem(item)" small class="error">Delete</v-chip>            
             </template>    
 
             </v-data-table>
@@ -242,8 +242,9 @@
         GeneralRules : [
            v => this.guard_ids.length || this.manager_ids.length || this.user_ids.length ? !!v : 'This field is required'
         ],
-        msg : '',
+        
         check:false,
+        loader: false,
 
       }
     },
@@ -272,6 +273,9 @@
     },
     methods:{
 
+      
+       
+
       getProjects(){
           this.$axios.get('/CheckProjectWithAllocation')
           .then((res) =>  console.log(this.projects  = res.data) );
@@ -279,6 +283,7 @@
         editItem (item) {
           this.$router.push('/allocations/' + item.id);
         }, 
+
          deleteItem (item) {
              confirm('Are you sure you want to delete this item?') && 
               this.$axios.delete('allocation/'+item.id)
@@ -287,10 +292,10 @@
               const index = this.data.indexOf(item)
               this.data.splice(index, 1)
 
-              this.snackbar = true;
-              this.msg = 'recored has been delete';
+            
 
               this.getProjects();
+               this.delete();
             
             });
 
@@ -307,6 +312,35 @@
         for_manager_ids(){
           this.manager_ids = this.check_all_manager_ids ? this.managers.map(v => v.id) : [] ;
         },
+
+        success(){
+        this.$swal.fire({
+        icon: 'success',
+        title: 'Record has been inserted',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+        failed(){
+        this.$swal.fire({
+        icon: 'error',
+        title: 'Record cannot insert',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+         
+        delete(){
+        this.$swal.fire({
+        icon: 'error',
+        title: 'Email has been deleted',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
        
         submit(){
             let payload = {
@@ -316,40 +350,47 @@
                 manager_ids : this.manager_ids
             };
 
+            this.loader = true;
+
             if(this.$refs.form.validate()){
 
             this.$axios.post('/allocation',payload)
-                .then((res) =>{
-
-
-                  this.msg = '';
+                .then((res) =>{ 
 
                   if(res.data.success){
-                    this.msg = 'record has been inserted';
+
+                    this.success() 
+                  
                     this.data.unshift(res.data.data); 
                     this.getProjects();
 
-                    setTimeout(() => location.reload() , 2000);
+                     setTimeout(() => location.reload() , 2000);
 
-                    // this.project_id = null;
-                    // this.user_ids = [];
-                    // this.guard_ids = [];                    
-                    // this.manager_ids = [];
+                    this.project_id = null;
+                    this.user_ids = [];
+                    this.guard_ids = [];                    
+                    this.manager_ids = [];
 
-                    // this.check_all_user_ids = false;
-                    // this.check_all_manager_ids = false;
-                    // this.check_all_guard_ids = false;
+                    this.check_all_user_ids = false;
+                    this.check_all_manager_ids = false;
+                    this.check_all_guard_ids = false;
 
 
                   }
                    else{
-                    this.msg = 'record cannot insert';
+
+                     this.failed();
+                    
+                    
                   }
-                  
-                  this.snackbar = true;                    
+                    
+                    
+                                     
                     
                 });
+              
                 }
+                this.loader = false;
         }
     }
   }

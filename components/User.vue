@@ -83,7 +83,7 @@
   <v-card-actions>
   <v-spacer></v-spacer>
   <v-btn small class="primary" text @click="close">Cancel</v-btn>
-  <v-btn small class="secondary" text @click="save">Save</v-btn>
+  <v-btn :loading="loader" small class="secondary" text @click="save">Save</v-btn>
 
   </v-card-actions>
 
@@ -109,7 +109,7 @@
 
 
   <v-btn small class="primary" text @click="close">Cancel</v-btn>
-  <v-btn small class="secondary" text @click="change_password_func">Save</v-btn>
+  <v-btn :loading="loader" small class="secondary" text @click="change_password_func">Save</v-btn>
 
 
   </v-form>
@@ -151,7 +151,8 @@ props : ['entity','role_id','additional_column'],
 
 data: () => ({
 
-// entity : 'Project Admin',  
+// entity : 'Project Admin', 
+loader: false, 
 dialog: false,
 isActive: true,
 search:'',
@@ -222,6 +223,7 @@ val || this.close()
 },
 
 created () {
+  
 this.initialize();
 this.isAdditionlColumn();
 
@@ -253,6 +255,77 @@ this.data = res.data.data;
 
 },
 
+        success(){
+
+
+        this.$swal.fire({
+        icon: 'success',
+        title: 'User has been inserted',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+        failed(){
+        this.$swal.fire({
+        icon: 'error',
+        title: 'User cannot inserted',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+
+        delete(){
+        this.$swal.fire({
+        icon: 'error',
+        title: 'User has been deleted',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+
+        password_success(){
+        this.$swal.fire({
+        icon: 'success',
+        title: 'Password has been updated',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+
+        password_failed(){
+        this.$swal.fire({
+        icon: 'error',
+        title: 'Password not updated',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+
+        edit_success(){
+        this.$swal.fire({
+        icon: 'success',
+        title: 'User has been updated',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+
+        edit_failed(){
+        this.$swal.fire({
+        icon: 'error',
+        title: 'User cannot updated',
+        showConfirmButton: false,
+        timer: 2000
+        })
+
+        },
+
 editItem (item) {
 this.editedIndex = this.data.indexOf(item)
 this.editedItem = Object.assign({}, item)
@@ -269,6 +342,7 @@ this.$axios.delete('user/'+item.id)
 
 const index = this.data.indexOf(item)
 this.data.splice(index, 1)
+this.delete();
 
 });
 },
@@ -293,9 +367,14 @@ confirm_password:this.confirm_password,
 .then((res) => {
 if(res.data.success){
 this.close()
+this.password_success();
+}
+else{
+  this.password_failed();
 }
 
 });   
+this.loader = false
 }
 },
 
@@ -310,6 +389,8 @@ admin : this.editedItem.admin,
 cnic : this.editedItem.cnic,
 isActive : this.isActive ? 1 : 0,
 };
+
+this.loader = true;
 if (this.editedIndex > -1) {
 //   Object.assign(this.data[this.editedIndex], this.editedItem)
 
@@ -322,13 +403,20 @@ if(res.data.success){
 this.data.splice(index, 1,res.data.data);
 this.close()
 this.errors = []
+this.edit_success();
+
+
 }
 else{
 this.errors = res.data.errors
+this.edit_failed();
+
 }
 
 })
 .catch(err => console.log(this.errors = err.response.data.errors));
+this.loader= false
+
 
 
 } else {
@@ -342,15 +430,22 @@ if(res.data.success){
 this.data.unshift(res.data.data)
 this.close()
 this.errors = []
+this.success();
+
 }
 else{
 this.errors = res.data.errors
+this.failed();
+
 }
 })
 .catch(err => console.log(this.errors = err.response.data.errors));
+this.loader= false
 }
 
 },
+
 },
+
 }
 </script>

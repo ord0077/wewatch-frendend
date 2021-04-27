@@ -419,29 +419,6 @@ required
 
 <v-card class="mt-5">
   <v-col>
-<v-snackbar
-      v-model="snackbar"
-      :timeout="4000"
-      :color="snackColor"
-      :top="top"
-    >
-      {{ snackText }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-         
-          small
-          v-bind="attrs"
-          text
-          class="secondary"
-          @click="snack = false"
-         
-
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
 
   <v-btn :loading="loader" class="primary ma-2" @click="save">Submit</v-btn>
 </v-col>
@@ -493,10 +470,6 @@ data: () => ({
 
 
 
-        snackbar: false,
-        snackText: '',
-        top:true,
-        snackColor:'',
 
         loader : false,
       
@@ -605,7 +578,7 @@ methods : {
 
 created () {
 this.$axios.get('project').then(res => this.projects = res.data);
-this.$axios.get('dsr').then(res => console.log(res));
+
 
 
 var today = new Date();
