@@ -20,12 +20,7 @@
       </v-autocomplete>
   </v-col>
 
-<v-col cols="12" md="12">
-<p class="font-weight-bold">recipientList</p>
-<div v-for="(rl , i) in recipientList" :key="i">
-  <span class="primary white--text ma-1 row" row x-samll>{{rl.email}}</span>
-</div>
-</v-col>
+<v-col cols="12" md="12"><EmailList :recipientList="recipientList" /></v-col>
 
 <v-col cols="12" md="12">
 <p class="font-weight-bold">Current Date</p>
@@ -292,7 +287,7 @@ required
 
 <v-card class="mt-5">
 <v-col cols="12" md="12">
-<p class="font-weight-bold">Toolbox Talk / HSE / Security Inductions</p>
+<p class="font-weight-bold">Security Inductions and Briefings </p>
 <v-textarea
 :rules="Rules"
 v-model="toolbox_talk"
@@ -428,7 +423,7 @@ required
 
 
 <v-col cols="12" md="12">
-<p class="font-weight-bold">Incident / Accident or Near Miss Reporting</p>
+<p class="font-weight-bold">Security Incident / Accident or Near Miss Reporting</p>
 
 <v-simple-table>
   <thead>

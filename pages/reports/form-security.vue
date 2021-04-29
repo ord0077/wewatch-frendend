@@ -6,9 +6,11 @@
   <v-col cols="12" md="12">  
     <p class="font-weight-bold">Event/Project</p>
 
+
       <v-autocomplete
       :rules="Rules" 
       v-model="project_id" 
+      @change="getRecipientList"
       :items="projects" 
       required 
       item-text="project_name" 
@@ -17,7 +19,12 @@
       auto 
       label="Project">
       </v-autocomplete>
+
+    
   </v-col>
+
+  <v-col cols="12" md="12"><EmailList :recipientList="recipientList" /></v-col>
+
 
 <v-col cols="12" md="12">
 <p class="font-weight-bold">Current Date</p>
@@ -225,7 +232,7 @@ required
 
 <v-card class="mt-5">
 <v-col cols="12" md="12">
-<p class="font-weight-bold">Toolbox Talk / HSE / Security Inductions</p>
+<p class="font-weight-bold">Security Inductions and Briefings</p>
 <v-textarea
 :rules="Rules"
 v-model="toolbox_talk"
@@ -242,7 +249,7 @@ required
 
 
 <v-col cols="12" md="12">
-<p class="font-weight-bold">Incident / Accident or Near Miss Reporting</p>
+<p class="font-weight-bold">Security Incident / Accident or Near Miss Reporting</p>
 
 <v-simple-table>
   <thead>
@@ -319,7 +326,7 @@ required
 
 <v-col cols="12" md="12">
 
-<p class="font-weight-bold">Country Travel Security </p>
+<p class="font-weight-bold">Country Travel Security Assessment</p>
 <v-textarea
 :rules="Rules"
 v-model="country_travel_security"
@@ -330,7 +337,7 @@ required
 
 </v-card>
 
-
+<!-- 
 <v-card class="mt-5">
 
 <v-col cols="12" md="12">
@@ -344,7 +351,7 @@ required
 ></v-textarea>
 </v-col> 
 
-</v-card>
+</v-card> -->
 
 
 <v-card class="mt-5">
@@ -463,6 +470,8 @@ data: () => ({
         today : '',
 
         projects : [],
+
+        recipientList : [],
   
         Rules: [
           v => !!v || 'This field is required',
@@ -521,6 +530,13 @@ methods : {
   })
 
   },
+
+
+  
+  getRecipientList () {
+    this.$axios.get(`recipient/${this.project_id}`)
+      .then(res => (this.recipientList = res.data));
+  },
   
   save () {
 
@@ -567,6 +583,7 @@ methods : {
           .then(res => {
             res.data.success ? this.success() : this.failed();
             this.loader = false
+            console.log(res.data);
 
           })
       }
