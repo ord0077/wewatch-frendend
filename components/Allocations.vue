@@ -5,27 +5,7 @@
     <v-row>
               <div class="text-center">
 
-              <v-snackbar
-              color="primary"
-              v-model="snackbar"
-              :timeout="timeout"
-              :top="top"
-              >
-             <b> {{ msg }} </b>
-
-              <template v-slot:action="{ attrs }">
-              <v-btn
-              text
-              x-small
-              class="secondary"
-              v-bind="attrs"
-              @click="snackbar = false"
-              fab
-              >
-              x
-              </v-btn>
-              </template>
-              </v-snackbar>
+            
               </div>
         <v-col cols="12" md="6">
         <v-toolbar dense flat class="primary" dark><b>Allocate for the Project</b>
@@ -250,7 +230,9 @@
     },
 
     created (){
-        this.$axios.get('/allocation').then(res => this.data = res.data.data );
+        this.$axios.get('/allocation').then(res => {
+          this.data = res.data.data
+        });
             
             
             this.$axios.get(`get_users_by_id/${7}`)
