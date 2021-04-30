@@ -50,9 +50,9 @@ export default {
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
-        // baseURL : 'http://localhost:8000/api/',
-        baseURL: 'https://powerful-beach-80053.herokuapp.com/api/',
-        // baseURL: 'https://wewatch.ordd.tk/api/'
+        // baseURL: 'http://localhost:8000/api/',
+        // baseURL: 'https://powerful-beach-80053.herokuapp.com/api/',
+        baseURL: 'https://wewatch.ordd.tk/api/'
     },
     auth: {
 
