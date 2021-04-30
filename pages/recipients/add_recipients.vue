@@ -69,7 +69,7 @@
 
 <v-col>
     <div :class="`${classColor}--text`">{{msg}}</div>
-  <v-btn class="primary" @click="save">Send</v-btn>
+  <v-btn class="primary" @click="save">Submit</v-btn>
 </v-col>
 
 
