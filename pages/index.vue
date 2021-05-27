@@ -21,22 +21,76 @@
 
           <v-card>
 
+
+
+
+
+
           <v-img :src="src" height="200px" />
 
-          <div class="pa-5">
-            <div class="mb-5">
-              <span>Temperature  <div> <b>20</b> </div></span>
-            </div>
-            <div class="mb-5">
-              <span>Temperature  <div> <b>20</b> </div></span>
-            </div>
-            <div class="mb-5">
-              <span>Temperature  <div> <b>20</b> </div></span>
-            </div>
+
+          <div >
+            <v-row >
+              <v-col cols="5" ></v-col>
+              <v-col cols="2" >
+                 <v-img height="75px" width="75px" :src="`https://openweathermap.org/img/w/${ weather.weather[0].icon}.png`"></v-img>
+              </v-col>
+              <v-col cols="5"></v-col>
+            </v-row>
 
 
           </div>
+           <v-row >
+                <v-col v-if="weather && weather.main.temp" cols="12" class="text-center">
+                 {{ weather.main.temp }} °C
+              </v-col>
+            </v-row>
 
+          <v-divider></v-divider>
+
+          <div class="pa-5">
+              <v-row>
+                <v-col cols="9">
+                  <b>Description</b>
+                </v-col>
+
+                <v-col cols="3" class="text-right">{{ weather.weather[0].description}}</v-col>
+          </v-row>
+          </div>
+
+          <v-divider></v-divider>
+
+          <div class="pa-5" >
+              <v-row>
+                <v-col cols="9">
+                  <b>Humidity</b>
+                </v-col>
+                <v-col cols="3" class="text-right" v-if="weather && weather.main.humidity">{{ weather.main.humidity}}%</v-col>
+          </v-row>
+          </div>
+
+          <v-divider></v-divider>
+
+          <div class="pa-5">
+              <v-row>
+                <v-col cols="9">
+                  <b>Visibility</b>
+                </v-col>
+                <v-col cols="3" class="text-right">{{ weather.visibility}}</v-col>
+          </v-row>
+          </div>
+
+
+        <v-divider></v-divider>
+
+          <div class="pa-5">
+              <v-row>
+                <v-col cols="9">
+                  <b>Speed</b>
+                </v-col>
+                <v-col cols="3" class="text-right">{{ weather.wind.speed}}</v-col>
+          </v-row>
+          </div>
           </v-card>
           </v-col>
   </v-row>
@@ -55,6 +109,8 @@
 
 <script>
 import Project from '@/components/Project';
+import axios from 'axios';
+
 
 export default {
 
@@ -67,11 +123,31 @@ export default {
  data : () => ({
     //src : 'https://www.timeanddate.com/scripts/weather_og.php?h1=Weather&h2=Local%20Weather%20Forcast',
     src : '/weather_bg.png',
+    weather :
+    {
+
+"weather": [
+{
+"description": "",
+"icon": ""
+}
+],
+"main": {
+"temp": "",
+"humidity":"",
+},
+"visibility": "",
+"wind": {
+  "speed":""
+},
+
+
+},
+
     loaded : false,
     arr : [],
     cards : [],
     value: [],
-    weathercity : 'Dubai',
     data: {
         labels: [],
 
@@ -86,13 +162,18 @@ export default {
             showLines: false,
           }
  }),
- created () {
-   this.$axios.get('https://api.openweathermap.org/data/2.5/weather?lon=55.3047&lat=25.2582&appid=c77442b715a725c1a34e37121bca1d5c')
-    .then(res => {
-      console.log(res);
-    });
- },
+ beforeCreate () {
+  axios.get('https://api.openweathermap.org/data/2.5/weather?lon=55.3047&lat=25.2582&units=metric&appid=c77442b715a725c1a34e37121bca1d5c')
+      .then(res => {
+        this.weather = res.data
+      });
+
+
+
+},
    async mounted () {
+
+
 
     this.loaded = false
     try {
