@@ -3,41 +3,41 @@
 <v-container>
 <v-card>
    <center><h1>Daily HSE Report</h1></center>
-  <v-col cols="12" md="12">  
+  <v-col cols="12" md="12">
     <p class="font-weight-bold">Event/Project</p>
 
       <v-autocomplete
-      :rules="Rules" 
-      v-model="project_id" 
+      :rules="Rules"
+      v-model="project_id"
       @change="getRecipientList"
-      :items="projects" 
-      required 
-      item-text="project_name" 
-      item-value="id" 
-      single-line 
-      auto 
+      :items="projects"
+      required
+      item-text="project_name"
+      item-value="id"
+      single-line
+      auto
       label="Project">
       </v-autocomplete>
   </v-col>
 
-<v-col cols="12" md="12"><EmailList :recipientList="recipientList" /></v-col>
+<!-- <v-col cols="12" md="12"><EmailList :recipientList="recipientList" /></v-col> -->
 
 <v-col cols="12" md="12">
 <p class="font-weight-bold">Current Date</p>
 <v-text-field readonly v-model="today" required></v-text-field>
 </v-col>
 
-<v-col cols="12" md="12">
+<!-- <v-col cols="12" md="12">
   <p class="font-weight-bold">Description Confidential</p>
   <v-textarea v-model="description_confidential" label="write your answer" required></v-textarea>
-</v-col> 
+</v-col> -->
 
 
 <v-col cols="12" md="12">
 
 <p class="font-weight-bold">Daily Situation Summary</p>
 <v-textarea v-model="daily_situation_summary" label="write your answer" required></v-textarea>
-</v-col> 
+</v-col>
 </v-card>
 
 <v-card class="mt-5">
@@ -64,7 +64,7 @@
 <td>
 <v-text-field v-model="wind_strength" :rules="Rules" label="write your answer" required></v-text-field>
 </td>
-<td>  
+<td>
 <v-text-field v-model="weather_wind_remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
 </td>
 </tr>
@@ -91,7 +91,7 @@
 <td>
 <v-text-field v-model="daily_operation_man_hour" type="number" :rules="Rules" label="write your answer" required></v-text-field>
 </td>
-<td>  
+<td>
 <v-text-field v-model="design_time_hour_remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
 </td>
 </tr>
@@ -127,10 +127,10 @@
 <td>
 <v-text-field v-model="l1.staff_numbers" type="number"  :rules="Rules" label="write your answer" required></v-text-field>
 </td>
-<td>  
+<td>
 <v-text-field v-model="l1.shift_pattern" :rules="Rules" label="write your answer" required></v-text-field>
 </td>
-<td>  
+<td>
 <v-text-field v-model="l1.daily_man_hours" type="number"  :rules="Rules" label="write your answer" required></v-text-field>
 </td>
 <td>
@@ -154,21 +154,21 @@
   <th class="primary white--text text-left">
     <v-btn small class="secondary" @click="add_loop2">Add Row <v-icon >mdi-plus</v-icon></v-btn>
   </th>
-  
+
   </tr>
 
   </thead>
 
 <tbody>
 <tr v-for="(l1 , i ) in loop2" :key="i">
-<td>    
-<v-text-field v-model="l1.type_contractors" :rules="Rules" required label="write your answer"></v-text-field> 
+<td>
+<v-text-field v-model="l1.type_contractors" :rules="Rules" required label="write your answer"></v-text-field>
 </td>
-<td>    
-<v-text-field v-model="l1.staff_numbers" type="number"  :rules="Rules" required label="write your answer"></v-text-field> 
+<td>
+<v-text-field v-model="l1.staff_numbers" type="number"  :rules="Rules" required label="write your answer"></v-text-field>
 </td>
-<td>    
-<v-text-field v-model="l1.shift_pattern" :rules="Rules" required label="write your answer"></v-text-field> 
+<td>
+<v-text-field v-model="l1.shift_pattern" :rules="Rules" required label="write your answer"></v-text-field>
 </td>
 <td>
 <v-icon v-if="i > 0" @click="deleteLoop2(i)" color="error">mdi-delete</v-icon>
@@ -178,23 +178,23 @@
 
 <tr>
 <td>TOTAL man-days</td>
-<td>    
-<v-text-field v-model="total_man_days" type="number"  :rules="Rules" required label="write your answer"></v-text-field> 
+<td>
+<v-text-field v-model="total_man_days" type="number"  :rules="Rules" required label="write your answer"></v-text-field>
 </td>
 </tr>
 
 <tr>
 <td>Total man-hours</td>
-<td>    
-<v-text-field v-model="total_man_hours" type="number"  :rules="Rules" required label="write your answer"></v-text-field> 
+<td>
+<v-text-field v-model="total_man_hours" type="number"  :rules="Rules" required label="write your answer"></v-text-field>
 </td>
 </tr>
 
 <tr>
 <td>Total lost work hours</td>
 
-<td>    
-<v-text-field v-model="total_lost_work_hours" type="number"  :rules="Rules" required label="write your answer"></v-text-field> 
+<td>
+<v-text-field v-model="total_lost_work_hours" type="number"  :rules="Rules" required label="write your answer"></v-text-field>
 </td>
 
 </tr>
@@ -218,7 +218,7 @@ v-model="project_key_meeting"
 label="write your answer"
 required
 ></v-textarea>
-</v-col> 
+</v-col>
 
 </v-card>
 
@@ -268,7 +268,7 @@ required
         </v-radio-group>
 
 </td>
-<td>  
+<td>
 <v-text-field v-model="l1.remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
 </td>
 <td>
@@ -287,14 +287,14 @@ required
 
 <v-card class="mt-5">
 <v-col cols="12" md="12">
-<p class="font-weight-bold">Security Inductions and Briefings </p>
+<p class="font-weight-bold">Inductions and Briefings </p>
 <v-textarea
 :rules="Rules"
 v-model="toolbox_talk"
 label="write your answer"
 required
 ></v-textarea>
-</v-col> 
+</v-col>
 
 </v-card>
 
@@ -302,7 +302,7 @@ required
 <v-card class="mt-5">
 <v-col cols="12" md="12">
 
-  
+
 <p class="font-weight-bold">Event/Project Health, Safety and Environmental Compliance</p>
 
 <v-simple-table>
@@ -344,7 +344,7 @@ required
         </v-radio-group>
 
 </td>
-<td>  
+<td>
 <v-text-field v-model="l1.project_health_remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
 </td>
 <td>
@@ -404,7 +404,7 @@ required
         ></v-radio>
         </v-radio-group>
 </td>
-<td>  
+<td>
 <v-text-field v-model="l1.hazard_identify_remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
 </td>
 <td>
@@ -423,7 +423,7 @@ required
 
 
 <v-col cols="12" md="12">
-<p class="font-weight-bold">Security Incident / Accident or Near Miss Reporting</p>
+<p class="font-weight-bold"> Incident / Accident or Near Miss Reporting</p>
 
 <v-simple-table>
   <thead>
@@ -464,7 +464,7 @@ required
         ></v-radio>
         </v-radio-group>
 </td>
-<td>  
+<td>
 <v-text-field v-model="l1.near_miss_remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
 </td>
 <td>
@@ -521,9 +521,9 @@ required
         value="0"
         ></v-radio>
         </v-radio-group>
-        
+
 </td>
-<td>  
+<td>
 <v-text-field v-model="l1.covid_compliance_remarks" :rules="Rules" label="write your answer" rows="3" required></v-text-field>
 </td>
 <td>
@@ -549,7 +549,7 @@ v-model="procurement_request"
 label="write your answer"
 required
 ></v-textarea>
-</v-col> 
+</v-col>
 
 </v-card>
 
@@ -564,7 +564,7 @@ v-model="red_flag"
 label="write your answer"
 required
 ></v-textarea>
-</v-col> 
+</v-col>
 </v-card>
 
 
@@ -574,7 +574,7 @@ required
 <v-card class="mt-5">
   <v-col>
 
- 
+
   <v-btn :loading="loader" class="primary ma-2" @click="save">Submit</v-btn>
 </v-col>
 
@@ -606,7 +606,7 @@ data: () => ({
         total_man_days : "",
         total_man_hours : "",
         total_lost_work_hours : "",
-     
+
         loop1 : [{contractors : '', staff_numbers : '', shift_pattern : '', daily_man_hours : '' }],
         loop2 : [{type_contractors : '', staff_numbers : '', shift_pattern : ''}],
         loop3 : [{activites : '', occurrence : '', remarks : ''}],
@@ -619,13 +619,13 @@ data: () => ({
         today : '',
 
         projects : [],
-  
+
         Rules: [
           v => !!v || 'This field is required',
         ],
         recipientList : [],
 
-        
+
         loader: false,
 
 }),
@@ -656,7 +656,7 @@ methods : {
   //     this.loop8.push({email : ''})
   //   },
 
-      
+
 
   deleteLoop1 (i) { this.loop1.splice(i, 1) },
   deleteLoop2 (i) { this.loop2.splice(i, 1) },
@@ -687,7 +687,7 @@ methods : {
   timer: 2000
   })
 
-  
+
 
   },
 
@@ -702,12 +702,12 @@ methods : {
 
 
 
-  
+
   save () {
 
       if(this.$refs.form.validate()){
 
-            var payload = {    
+            var payload = {
              project_id :  this.project_id,
               user_id : this.$auth.user.id,
               date : this.today,
@@ -730,7 +730,7 @@ methods : {
               total_lost_work_hours : this.total_lost_work_hours,
 
               contractors : this.loop1,
-      
+
               type_contractors : this.loop2,
               build_activities : this.loop3,
               project_health : this.loop4,
@@ -738,11 +738,11 @@ methods : {
               near_miss_activities : this.loop6,
               covid_compliance : this.loop7,
 
-             
+
         };
 
-         this.loader = true;  
-                
+         this.loader = true;
+
         this.$axios.post('dhr',payload).then(res => {
             res.data.success ? this.success() : this.failed();
             this.loader = false
@@ -756,8 +756,8 @@ methods : {
 
 
 
-          
-        
+
+
 
 created () {
 this.$axios.get('project').then(res => this.projects = res.data);
@@ -779,8 +779,8 @@ this.today = dd + '/' + mm + '/' + yyyy;
 <style scoped>
 th
 {
-border-right:2px solid white; 
-background:#2d57a3; 
+border-right:2px solid white;
+background:#2d57a3;
 color: white !important;
 width:250px ;
 }
