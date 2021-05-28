@@ -33,8 +33,9 @@
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon  @click.stop="drawer = !drawer" />
       <v-btn
+        class="hidden-sm-and-down"
         icon
         @click.stop="miniVariant = !miniVariant"
       >
@@ -53,16 +54,21 @@
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->
       <!-- <v-toolbar-title v-text="title" /> -->
-        <img src="/logo.png" alt="login" style="width:350px">
+
+
+
+        <img class="hidden-sm-and-down" src="/logo.png" alt="login" style="width:15%;margin: 15px;">
+        <img class="hidden-md-and-up" src="/logo.png" alt="login" style="width: 70%; margin: 20px; padding: 10px;">
+
       <v-spacer />
-       <span class="secondary--text">{{Greetings}}</span> 
+       <span class="secondary--text hidden-sm-and-down">{{Greetings}}</span>
       <v-btn @click="logout" icon color="secondary">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
-      <v-breadcrumbs :items="items">
+      <v-breadcrumbs class="hidden-sm-and-down" :items="items">
       <template v-slot:divider>
       <v-icon>mdi-chevron-right</v-icon>
       </template>
@@ -70,24 +76,8 @@
       <nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer 
+
+    <v-footer
       dark
       class="grey"
       :absolute="!fixed"
@@ -139,7 +129,7 @@ export default {
           text:'Project',
           to: '/project'
         },
-       
+
          {
           icon: 'mdi-chart-bubble',
           text:'wewatch Manager',
@@ -156,7 +146,7 @@ export default {
           to: '/user/security_guard'
         },
 
-       
+
         {
           icon: 'mdi-chart-bubble',
           text:'Allocation',
@@ -180,15 +170,15 @@ export default {
         //   text:'Securtiy',
         //   to: '/security',
         //   external : '',
-        // }  
-        
+        // }
+
           {
             icon: 'mdi-chart-bubble',
             text:'Report',
             to: '/reports'
           },
     ];
-   
+
 
     if(this.isSecurityGuard){
     this.items = [
@@ -197,8 +187,8 @@ export default {
           text:'Dashboard',
           to: '/'
         },
-        
-    ]    
+
+    ]
     }
     else if(this.isUser){
       this.items = [
@@ -207,7 +197,7 @@ export default {
           text:'Dashboard',
           to: '/'
         },
-       
+
     ]
     }
     else if(this.isProjectAdmin){
@@ -231,7 +221,7 @@ export default {
           text:'Project',
           to: '/project'
         },
-      
+
     ]
     }
 
@@ -241,7 +231,7 @@ export default {
 
   },
   computed : {
-  
+
     Greetings () {
       return 'Welcome, ' + this.$auth.user.email;
     },
@@ -250,7 +240,7 @@ export default {
     isSecurityGuard () {
       return this.$auth.user && this.$auth.user.user_type == "Security Guard";
     },
-    
+
     isProjectAdmin () {
       return this.$auth.user && this.$auth.user.user_type == "project Admin";
     },
