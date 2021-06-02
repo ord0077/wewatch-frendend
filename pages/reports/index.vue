@@ -1,7 +1,7 @@
 <template>
 <v-row>
       <v-col  cols="12" sm="8" md="6" class="" v-for="(card,i) in cards" :key="i">
-                         
+
             <v-card :to="card.link" :class="card.color" class="pa-2">
             <v-list-item dark>
             <v-list-item-content>
@@ -18,25 +18,20 @@
   export default {
     data: () => ({ cards : [] }),
 
- 
+
     created () {
-       this.$axios.get('all').then(res => {
-        
-        this.cards = [
-                    {text:'Daily HSE Report',count:res.data.GetDailyHSEReportCount,color:'orange darken-4',link : '/reports/form-hse'},
-                    {text:'Daily Security Report',count:res.data.GetDailySecurityReportCount,color:'info lighten-1',link : '/reports/form-security'},
-                  
+       this.cards = [
+                    {text:'Daily HSE Report',color:'orange darken-4',link : '/reports/form-hse'},
+                    {text:'Daily Security Report',color:'info lighten-1',link : '/reports/form-security'},
+
 
         ];
-
-
-      });
     },
 
     methods: {
-     
+
       added_zero(v) { return v < 10 ? '0' + v : v },
-  
+
     },
   }
 </script>

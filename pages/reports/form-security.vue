@@ -1,8 +1,17 @@
 <template>
 <v-form  ref="form">
 <v-container>
+
+<v-card class="mt-5">
+<v-toolbar flat class="primary" dark>
+   <h3>Daily Security Report</h3>
+   <v-spacer></v-spacer>
+   <v-btn to="/reports/dsr-list" color="secondary" small>DSR List</v-btn>
+</v-toolbar>
+</v-card>
+
 <v-card>
-   <center><h1>Daily Security Report</h1></center>
+   <center class="mt-4"><h1>Daily Security Report</h1></center>
   <v-col cols="12" md="12">
     <p class="font-weight-bold">Event/Project</p>
 
@@ -577,13 +586,16 @@ methods : {
 
         };
 
-        this.loader = true;
+
+
+         this.loader = true;
 
         this.$axios.post('dsr',payload)
           .then(res => {
+
              res.data.success ? this.success() : this.failed();
               this.loader = false
-            console.log(res.data);
+              console.log(res.data);
 
           })
       }

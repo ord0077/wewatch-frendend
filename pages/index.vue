@@ -86,7 +86,7 @@
           <div class="pa-5">
               <v-row>
                 <v-col cols="9">
-                  <b>Speed</b>
+                  <b>Wind Speed</b>
                 </v-col>
                 <v-col cols="3" class="text-right">{{ weather.wind.speed}}</v-col>
           </v-row>

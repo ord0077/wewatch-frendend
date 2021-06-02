@@ -1,6 +1,13 @@
 <template>
 <v-form  ref="form">
 <v-container>
+  <v-card class="mt-5">
+<v-toolbar flat class="primary" dark>
+   <h3>Daily HSE Report</h3>
+   <v-spacer></v-spacer>
+   <v-btn to="/reports/hse-list" color="secondary" small>HSE List</v-btn>
+</v-toolbar>
+</v-card>
 <v-card>
    <center><h1>Daily HSE Report</h1></center>
   <v-col cols="12" md="12">
