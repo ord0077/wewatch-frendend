@@ -12,10 +12,14 @@
         <PieChart />
       </v-card>
        </v-col>
-       <v-col cols="12" sm="8" md="4" >
-      <v-card class="pa-5">
-      </v-card>
-       </v-col> -->
+        -->
+        <v-col cols="12" sm="12" md="12" >
+                <v-alert class="secondary white--text">
+                    <span class="seondary--text">Project : {{project.project_name}}</span>
+                </v-alert>
+       </v-col>
+
+
           <v-col  cols="12" sm="8" md="4" class="" v-for="(card,i) in cards" :key="i">
             <v-card :to="card.link" :class="card.color" class="pa-2">
             <v-list-item dark>
@@ -84,9 +88,15 @@ export default {
             showLines: false,
           }
  }),
+  computed: {
+    project () {
+      return this.$store.state.project.project
+    }
+  },
    async mounted () {
     this.loaded = false
     try {
+        
       await this.$axios.get(`count_by_project/${this.$route.params.id}`)
       .then(res => {
         

@@ -181,8 +181,6 @@ export default {
       await this.$axios.get('all')
       .then(res => {
 
-        console.log(res.data);
-
         this.cards = [
                     {link : '/project',text:'Total Projects',count:res.data.ProjectCount,color:'primary',chartColor : 'rgb(45 87 163)'},
                     {link : '/user/project_admin',text:'Total Project Admins (Clients)',count:res.data.ProjectAdminCount,color:'green',chartColor : 'rgb(45 87 163)'},
