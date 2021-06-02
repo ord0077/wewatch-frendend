@@ -87,7 +87,6 @@ export default {
    async mounted () {
     this.loaded = false
     try {
-      console.log(this.$route.params.id);
       await this.$axios.get(`count_by_project/${this.$route.params.id}`)
       .then(res => {
         
@@ -99,9 +98,7 @@ export default {
                     { link : this.$route.params.id + '/sitevisitor',text:'Daily Site Visitor Report',count:res.data.GetSiteVisiterRecordCount,color:'brown darken-1',chartColor : 'rgb(109 76 65)' },
                     { link : this.$route.params.id + '/traininginduction',text:'Training Induction Report',count:res.data.GetTrainingInductionCount,color:'purple',chartColor : 'rgb(156 39 176)' },
                     { link : this.$route.params.id + '/observation',text:'Observation Report',count:res.data.GetObservationCount,color:'green',chartColor : 'rgb(76 175 80)' },
-                    // {link : '/covid',text:'Daily Man Hours',count:res.data.GetDailyManHoursCount,color:'orange lighten-1',chartColor : 'rgb(255 167 38)'},
-                    // {link : '/covid',text:'Lost Work Hours',count:res.data.GetLostWorkHoursCount,color:'brown lighten-1',chartColor : 'rgb(141 110 99)'},
-
+          
         ];
         this.data.labels = this.cards.flatMap((v) => v.text )
         this.data.datasets[0].label = 'Reports'

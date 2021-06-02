@@ -36,9 +36,7 @@
 <!-- <p class="font-weight-bold">Recipient</p> -->
 
 <v-simple-table>
-  <thead>
-
-
+<thead>
 <tr>
 <th>
   Email list of Recipients 
@@ -64,14 +62,17 @@
 
 </tbody>
 
+<tfoot>
+  <tr>
+  <td>
+    <v-btn :loading="loader" class="primary" @click="save">Submit</v-btn>
+  </td>
+</tr>
+
+</tfoot>
+
 </v-simple-table>
 </v-col>
-
-<v-col>
-    <div :class="`${classColor}--text`">{{msg}}</div>
-  <v-btn class="primary" @click="save">Submit</v-btn>
-</v-col>
-
 
 </v-card>
 
@@ -88,6 +89,7 @@
 export default {
 data: () => ({
 
+        loader: false,
         project_id :"",
         loop8 : [{email : ''}],
         projects : [],
@@ -107,8 +109,24 @@ methods : {
       this.loop8.push({email : ''})
     },
 
-      
+  success(){
+  this.$swal.fire({
+  icon: 'success',
+  title: 'Record has been added',
+  showConfirmButton: false,
+  timer: 2000
+  })
 
+  },
+  failed(){
+  this.$swal.fire({
+  icon: 'info',
+  title: 'Record/Records exists already',
+  showConfirmButton: false,
+  timer: 2000
+  })
+  },
+  
   deleteLoop8 (i) { this.loop8.splice(i, 1) },
 
   
@@ -122,21 +140,23 @@ methods : {
               emails:this.loop8
 
         };
+
+        this.loader = true;
                 
         this.$axios.post('recipient',payload).then(res => {
           if(res.data.success){
-              this.msg = 'record has been added';
-              this.classColor = 'success';
+              this.success();
+              this.loader = false;
           }
           else if(res.data.exists){
-            this.msg = 'record/records exists already';
-            this.classColor = 'error';
+            this.failed()
+            this.loader = true
             this.exists = res.data.exists;
           }
+
+          setTimeout(() => this.loader = false , 3000)
         });
 
-
-        setTimeout(() => this.msg = '', 3000);
       }
 
 },

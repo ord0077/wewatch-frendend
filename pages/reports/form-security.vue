@@ -595,7 +595,6 @@ methods : {
 
              res.data.success ? this.success() : this.failed();
               this.loader = false
-              console.log(res.data);
 
           })
       }
