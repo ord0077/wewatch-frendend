@@ -12,10 +12,14 @@
         <PieChart />
       </v-card>
        </v-col>
-       <v-col cols="12" sm="8" md="4" >
-      <v-card class="pa-5">
-      </v-card>
-       </v-col> -->
+        -->
+        <v-col cols="12" sm="12" md="12" >
+                <v-alert class="secondary white--text">
+                    <span class="seondary--text">Project : {{project.project_name}}</span>
+                </v-alert>
+       </v-col>
+
+
           <v-col  cols="12" sm="8" md="4" class="" v-for="(card,i) in cards" :key="i">
             <v-card :to="card.link" :class="card.color" class="pa-2">
             <v-list-item dark>
@@ -84,10 +88,15 @@ export default {
             showLines: false,
           }
  }),
+  computed: {
+    project () {
+      return this.$store.state.project.project
+    }
+  },
    async mounted () {
     this.loaded = false
     try {
-      console.log(this.$route.params.id);
+        
       await this.$axios.get(`count_by_project/${this.$route.params.id}`)
       .then(res => {
         
@@ -99,9 +108,7 @@ export default {
                     { link : this.$route.params.id + '/sitevisitor',text:'Daily Site Visitor Report',count:res.data.GetSiteVisiterRecordCount,color:'brown darken-1',chartColor : 'rgb(109 76 65)' },
                     { link : this.$route.params.id + '/traininginduction',text:'Training Induction Report',count:res.data.GetTrainingInductionCount,color:'purple',chartColor : 'rgb(156 39 176)' },
                     { link : this.$route.params.id + '/observation',text:'Observation Report',count:res.data.GetObservationCount,color:'green',chartColor : 'rgb(76 175 80)' },
-                    // {link : '/covid',text:'Daily Man Hours',count:res.data.GetDailyManHoursCount,color:'orange lighten-1',chartColor : 'rgb(255 167 38)'},
-                    // {link : '/covid',text:'Lost Work Hours',count:res.data.GetLostWorkHoursCount,color:'brown lighten-1',chartColor : 'rgb(141 110 99)'},
-
+          
         ];
         this.data.labels = this.cards.flatMap((v) => v.text )
         this.data.datasets[0].label = 'Reports'

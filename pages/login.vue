@@ -49,27 +49,21 @@ msg:''
 methods:{
 
 login () {
-this.loading = true
 
-let credentials = {
-email: this.email,
-password: this.password
-};
+let credentials = { email: this.email, password: this.password };
+
 try {
 this.$auth.loginWith('local',{ data:credentials })
 .catch((e) => {
-this.snackbar = true
-this.msg = e.response.data.error 
-setTimeout(() => {
-this.loading = false
-// location.reload();
-},3000);
+ this.$swal.fire({
+  icon: 'error',
+  title: e.response.data.error,
+  showConfirmButton: false,
+  timer: 1500
+ })
 })
 }
-catch{
-this.snackbar = true
-this.msg = 'test'
-}
+catch{ console.log('error') }
 
 }
 

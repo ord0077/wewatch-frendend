@@ -183,12 +183,10 @@ export default {
 
         this.cards = [
                     {link : '/project',text:'Total Projects',count:res.data.ProjectCount,color:'primary',chartColor : 'rgb(45 87 163)'},
-                    {link : '/project_admin',text:'Total Project Admins (Clients)',count:res.data.ProjectAdminCount,color:'green',chartColor : 'rgb(45 87 163)'},
-                    {link : '/wewatchmanager',text:'Total Wewatch Managers',count:res.data.WewatchManagerCount,color:'purple',chartColor : 'rgb(244 67 54)'},
-                    {link : '/user',text:'Total Users',count:res.data.UserCount,color:'info lighten-1',chartColor : 'rgb(75 194 181)'},
-                    {link : '/security_guard',text:'Total Security Guard',count:res.data.SecurityGuardCount,color:'orange darken-4', chartColor : 'rgb(230 81 0)'},
-                    // {link : '/covid',text:'Daily Man Hours',count:res.data.GetDailyManHoursCount,color:'orange lighten-1',chartColor : 'rgb(255 167 38)'},
-                    // {link : '/covid',text:'Lost Work Hours',count:res.data.GetLostWorkHoursCount,color:'brown lighten-1',chartColor : 'rgb(141 110 99)'},
+                    {link : '/user/project_admin',text:'Total Project Admins (Clients)',count:res.data.ProjectAdminCount,color:'green',chartColor : 'rgb(45 87 163)'},
+                    {link : '/user/wewatchmanager',text:'Total Wewatch Managers',count:res.data.WewatchManagerCount,color:'purple',chartColor : 'rgb(244 67 54)'},
+                    {link : '/user/user',text:'Total Users',count:res.data.UserCount,color:'info lighten-1',chartColor : 'rgb(75 194 181)'},
+                    {link : '/user/security_guard',text:'Total Security Guard',count:res.data.SecurityGuardCount,color:'orange darken-4', chartColor : 'rgb(230 81 0)'},
 
         ];
 

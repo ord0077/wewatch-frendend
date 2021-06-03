@@ -285,7 +285,12 @@
   </template>
 
     <template v-slot:item.open_dashboard="{ item }">
-      <v-btn small class="primary" :to="`/project/${item.id}`">Open Dashboard</v-btn>
+      <v-btn 
+        small 
+        class="primary" 
+        @click="storeProject(item)">
+        Open Dashboard
+        </v-btn>
   </template>
 
   <template v-slot:no-data>
@@ -421,6 +426,12 @@ export default {
   },
 
   methods: {
+    storeProject(item){
+      
+          this.$store.commit('project/add', item)
+          this.$router.push(`/project/${item.id}`);
+    
+    },
     initialize () {
 
          this.getProjects();
