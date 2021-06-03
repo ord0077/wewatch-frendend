@@ -281,6 +281,7 @@
     >
       mdi-delete
     </v-icon> -->
+
   </template>
 
     <template v-slot:item.open_dashboard="{ item }">
