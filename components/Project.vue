@@ -13,7 +13,7 @@
         inset
         vertical
       ></v-divider>
-      <v-text-field   
+      <v-text-field
       label="Search"
       hide-details v-model="search"></v-text-field>
         <v-divider
@@ -34,24 +34,24 @@
             </v-btn> -->
               <v-btn v-if="formTitle == 'New'" raised class="primary mt-2" @click="onPickFile">
               {{(!project_logo.name) ?  'Project Logo' : project_logo.name}}
-              <input 
-                required 
-                type="file" 
-                @change="checkFile" 
-                style="display:none;" 
-                accept="image/*" 
+              <input
+                required
+                type="file"
+                @change="checkFile"
+                style="display:none;"
+                accept="image/*"
                 ref="fileInput"
               >
-              </v-btn>  
-              
+              </v-btn>
+
               <!-- <div class="error--text" v-if="cnic_fileSize" style="color: #ff1744 !important;">file size should be less than 1MB</div> -->
 
             </v-card-title>
-          <span style="font-size: 0.875rem; color: red; font-weight: 400; position: absolute; right: 20px;" v-if="errors.project_logo" v-text="errors.project_logo[0]"></span>                            
+          <span style="font-size: 0.875rem; color: red; font-weight: 400; position: absolute; right: 20px;" v-if="errors.project_logo" v-text="errors.project_logo[0]"></span>
           <v-card-text>
             <v-container>
               <v-row>
-                  
+
 
                 <v-col cols="6" sm="6" md="6">
                   <v-text-field :readonly="isReadOnly" v-model="editedItem.project_name" :label="`${entity} Name`"></v-text-field>
@@ -59,20 +59,20 @@
                 </v-col>
                   <v-col cols="6" sm="6" md="6">
               <v-autocomplete
-                    :readonly="isReadOnly" 
-                      v-model="editedItem.user_id" 
-                      :items="clients" 
+                    :readonly="isReadOnly"
+                      v-model="editedItem.user_id"
+                      :items="clients"
                       :rules="ClientRules"
                       required
                     item-text="name" item-value="id" single-line auto label="Project Admin">
                 </v-autocomplete>
-          <span style="font-size: 0.875rem; color: red; font-weight: 400;" v-if="errors.user_id" v-text="errors.user_id[0]"></span>                                                          
+          <span style="font-size: 0.875rem; color: red; font-weight: 400;" v-if="errors.user_id" v-text="errors.user_id[0]"></span>
                     <!-- <v-text-field v-model="editedItem.project_logo" :label="`${entity} Logo`"></v-text-field>
                     <div style="color:red;" v-if="errors.project_logo">{{errors.project_logo[0]}}</div> -->
                 </v-col>
                   <v-col cols="6" sm="6" md="6">
                 <v-text-field v-if="isReadOnly" :readonly="isReadOnly" v-model="editedItem.start_date" :label="`Start Date`"></v-text-field>
-                
+
                     <v-menu
                     v-else
                     ref="menu"
@@ -117,7 +117,7 @@
                     </v-menu>
                 </v-col>
           <v-col cols="6" sm="6" md="6">
-      <v-text-field v-if="isReadOnly" :readonly="isReadOnly" v-model="editedItem.end_date" :label="`End Date`"></v-text-field>                
+      <v-text-field v-if="isReadOnly" :readonly="isReadOnly" v-model="editedItem.end_date" :label="`End Date`"></v-text-field>
         <v-menu
         v-else
       ref="menu2"
@@ -168,7 +168,7 @@
                   <v-text-field :readonly="isReadOnly" v-model="editedItem.zones" :label="`No of zones you want to create`"></v-text-field>
                   <div style="color:red;" v-if="errors.zones">{{errors.zones[0]}}</div>
                 </v-col>
-                
+
               </v-row>
             </v-container>
           </v-card-text>
@@ -177,14 +177,14 @@
             <v-spacer></v-spacer>
             <v-btn small class="primary" text @click="close">Cancel</v-btn>
             <v-btn small class="secondary" text @click="save">Save</v-btn>
-            
+
           </v-card-actions>
 
           <template v-if="action == 'Edit'">
 
             <v-divider></v-divider>
 
-              
+
             <v-card-title>
               <span class="headline">Update Project Logo</span>
             </v-card-title>
@@ -198,19 +198,19 @@
                       <!-- project_logo_update -->
                       <v-btn raised class="primary" small @click="onPickFile">
                       {{(!project_logo.name) ?  'Project Logo' : project_logo.name}}
-                      <input 
-                        required 
-                        type="file" 
-                        @change="checkFile" 
-                        style="display:none;" 
-                        accept="image/*" 
+                      <input
+                        required
+                        type="file"
+                        @change="checkFile"
+                        style="display:none;"
+                        accept="image/*"
                         ref="fileInput"
                       >
-                      </v-btn>  
+                      </v-btn>
 
                      <v-btn small class="secondary" text @click="project_logo_update_submit">Save</v-btn>
-                
-              
+
+
                     </v-form>
               </v-container>
             </v-card-text>
@@ -224,16 +224,16 @@
     </v-toolbar>
   </template>
   <template v-slot:item.zones="{item}">
-      <v-chip v-if="item.zones.length == 0" class="ma-1" color="secondary" small>      
+      <v-chip v-if="item.zones.length == 0" class="ma-1" color="secondary" small>
           You dont created zones yet
       </v-chip>
-  
+
       <v-chip v-else class="ma-1" color="secondary" small v-for="(zone,i) in item.zones" :key="i" >
           {{zone.zone_name}}
       </v-chip>
-        
-      
-    
+
+
+
     </template>
     <template v-slot:item.project_logo="{item}">
     <div class="pa-5" >
@@ -249,14 +249,14 @@
       >
         Open Logo {{item}}
       </v-btn>
-      
-      
+
+
     </template>
-      
-      
+
+
   </v-dialog> -->
 
-      
+
     </div>
   </template>
   <template v-slot:item.actions="{ item }">
@@ -267,7 +267,7 @@
     >
       mdi-pencil
     </v-icon>
-      
+
       <v-icon
       small
       class="mr-2"
@@ -275,12 +275,12 @@
       >
       mdi-eye
       </v-icon>
-    <v-icon
+    <!-- <v-icon
       small
       @click="deleteItem(item)"
     >
       mdi-delete
-    </v-icon>
+    </v-icon> -->
   </template>
 
     <template v-slot:item.open_dashboard="{ item }">
@@ -297,7 +297,7 @@
 export default {
   data: () => ({
 
-    entity : 'Project',  
+    entity : 'Project',
     dialog1 : false,
     dialog: false,
     menu: false,
@@ -306,13 +306,13 @@ export default {
     search:'',
     img_holder : '',
     headers: [
-      
+
       {
         text: '#',
         sortable: false,
         value: 'id',
       },
-       
+
       {
         text: 'Dashboard',
         sortable: false,
@@ -353,8 +353,8 @@ export default {
         sortable: false,
         value: 'zones',
       },
-      
-    
+
+
       { text: 'Actions', value: 'actions', sortable: false },
 
     ],
@@ -389,7 +389,7 @@ export default {
     ]
 
   }),
- 
+
   computed: {
     isReadOnly(){
       return this.action == 'View'
@@ -453,10 +453,10 @@ export default {
 
 
 
-    onPickFile() { 
-      this.$refs.fileInput.click() 
+    onPickFile() {
+      this.$refs.fileInput.click()
     },
-    checkFile(e) { 
+    checkFile(e) {
 
     this.project_logo = e.target.files[0] || '';
 
@@ -484,14 +484,14 @@ export default {
 },
 
     deleteItem (item) {
-      
-        confirm('Are you sure you want to delete this item?') && 
+
+        confirm('Are you sure you want to delete this item?') &&
         this.$axios.delete('project/'+item.id)
           .then((res) => {
-    
+
             const index = this.data.indexOf(item)
             this.data.splice(index, 1)
-          
+
           });
     },
 
@@ -507,22 +507,22 @@ export default {
          var payload  = new FormData();
 
           payload.append('project_logo',this.project_logo);
-        
+
          this.$axios.post('update_project_logo/' + this.editedItem.id, payload)
           .then(res => {
              const index = this.data.findIndex(item => item.id == this.editedItem.id)
-             this.data.splice(index, 1,res.data.data);  
+             this.data.splice(index, 1,res.data.data);
             this.close()
             this.errors = []
-            this.editedItem = Object.assign({}, this.defaultItem) 
+            this.editedItem = Object.assign({}, this.defaultItem)
           })
     },
 
     save () {
 
-    
-      
-      
+
+
+
       if(this.editedIndex > -1) {
 
         this.$axios.put('project/' + this.editedItem.id, this.editedItem)
@@ -540,11 +540,11 @@ export default {
                       this.errors = res.data.errors
                       }
 
-            
+
           });
-          
-            
-              
+
+
+
 
       } else {
 
@@ -557,7 +557,7 @@ export default {
           payload.append('end_date',this.editedItem.end_date);
           payload.append('zones',this.editedItem.zones);
           payload.append('project_logo',this.project_logo);
-          
+
             this.$axios.post('project',payload)
             .then((res) => {
                   if(res.data.success){
@@ -572,7 +572,7 @@ export default {
           })
           .catch(err => console.log(this.errors = err.response.data.errors));
       }
-    
+
     },
   },
 }
