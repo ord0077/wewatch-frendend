@@ -10,18 +10,41 @@
         <v-toolbar-title>{{entity}}</v-toolbar-title>
 
         <v-text-field
-         class="mx-4"
+        class="mx-4"
         label="Search"
         hide-details v-model="search"></v-text-field>
 
       </v-toolbar>
     </template>
-    <template v-slot:item.attachments="{ item }">
+    <template v-slot:item.image="{ item }">
 
 
-        <v-img height="150px" width="150px"  :src="item.attachments" />
+      <!-- {{item.image}} -->
+        <img height="150px" width="150px"  :src="item.image" />
 
     </template>
+
+    <template v-slot:item.open_file="{ item }">
+
+      <a :href="`/project/${item.project_id}/covid/${item.id}`">
+
+        <v-btn
+        small
+        class="primary">
+        Open File &nbsp;
+
+        <v-icon
+        small
+
+        >
+        mdi-open-in-new
+        </v-icon>
+        </v-btn>
+
+      </a>
+
+
+  </template>
 
     <template v-slot:item.actions="{ item }">
       <!-- <v-icon
@@ -48,39 +71,44 @@
   export default {
     data: () => ({
 
-      entity : 'Observation',
+      entity : 'Covid',
       dialog: false,
       isActive: true,
       search:'',
       headers: [
-         {
-          text: 'Attachments',
-          sortable: true,
-          value: 'attachments',
-        },
         {
+          text: '#',
+          sortable: true,
+          value: 'id',
+        },
+         {
           text: 'Project',
           sortable: true,
-          value: 'project.project_name',
+          value: 'project.id',
         },
          {
-          text: 'Action',
+          text: 'FIle',
           sortable: true,
-          value: 'action',
+          value: 'open_file',
         },
         {
-          text: 'Location',
+          text: 'Staff Name',
           sortable: true,
-          value: 'location',
+          value: 'staff_name',
         },
         {
-          text: 'Description',
+          text: 'Company',
           sortable: true,
-          value: 'observation_description',
+          value: 'company',
+        },
+         {
+          text: 'Remarks',
+          sortable: false,
+          value: 'remarks',
         },
 
 
-        { text: 'Delete', value: 'actions', sortable: false },
+        { text: 'Actions', value: 'actions', sortable: false },
 
       ],
       data: [],
@@ -116,6 +144,10 @@
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
 
+
+
+
+
     },
 
     watch: {
@@ -131,14 +163,14 @@
     methods: {
       initialize () {
 
-          console.log(this.$store.state.project.project.id)
-
-            this.$axios.get(`observation/project/${this.$store.state.project.project.id}`)
-            .then(res => {
-              console.log(this.data = res.data);
-            });
+        this.$axios.get(`covid/project/${this.$store.state.project.project.id}`).then(res => this.data = res.data);
 
 
+      },
+
+      openFile(){
+
+        this.$router.push(`/project/${item.id}`);
 
       },
 
@@ -153,7 +185,7 @@
       deleteItem (item) {
 
          confirm('Are you sure you want to delete this item?') &&
-         this.$axios.delete('observation/'+item.id)
+         this.$axios.delete('covid/'+item.id)
             .then((res) => {
 
               const index = this.data.indexOf(item)
@@ -170,8 +202,18 @@
         })
       },
 
+      change_password_func(){
+        if(this.$refs.change_password_ref.validate()){
 
+          this.$axios.post('change_password/'+this.editedItem.id,{change_password:this.change_password})
+              .then((res) => {
+                if(res.data.success){
+                  this.close()
+                }
 
+              });
+              }
+      },
 
 
     },

@@ -33,6 +33,8 @@
                 <v-img v-if="img_holder" :src="img_holder"></v-img>
             </v-btn> -->
               <v-btn v-if="formTitle == 'New'" raised class="primary mt-2" @click="onPickFile">
+
+
               {{(!project_logo.name) ?  'Project Logo' : project_logo.name}}
               <input
                 required
@@ -285,9 +287,9 @@
   </template>
 
     <template v-slot:item.open_dashboard="{ item }">
-      <v-btn 
-        small 
-        class="primary" 
+      <v-btn
+        small
+        class="primary"
         @click="storeProject(item)">
         Open Dashboard
         </v-btn>
@@ -314,7 +316,7 @@ export default {
     headers: [
 
       {
-        text: '#',
+        text: 'Project Id',
         sortable: false,
         value: 'id',
       },
@@ -427,10 +429,10 @@ export default {
 
   methods: {
     storeProject(item){
-      
+
           this.$store.commit('project/add', item)
           this.$router.push(`/project/${item.id}`);
-    
+
     },
     initialize () {
 

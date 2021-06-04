@@ -8,20 +8,20 @@
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>{{entity}}</v-toolbar-title>
-      
-        <v-text-field   
+
+        <v-text-field
         label="Search"
         class="mx-4"
         hide-details v-model="search"></v-text-field>
 
         <v-btn class="primary" @click="save">Add Data</v-btn>
 
-       
+
 
         <v-dialog v-model="dialog" max-width="900px">
-        
+
           <v-card>
-            
+
             <v-card-title>
               <span class="headline">{{ formTitle }} {{entity}}</span>
             </v-card-title>
@@ -37,7 +37,7 @@
                   </v-col>
 
                    <v-col cols="6" sm="6" md="6">
-                   
+
 
                           <v-menu
                           ref="menu"
@@ -127,17 +127,17 @@
                           </v-time-picker>
                           </v-menu>
 
-                  
+
 
                     <div style="color:red;" v-if="errors.reported_time">{{errors.reported_time[0]}}</div>
                   </v-col>
 
                    <v-col cols="6" sm="6" md="6">
-                
 
-                        <v-autocomplete 
-                        v-model="editedItem.category_incident" :items="['Nearmiss', 'Personal Injury', 'Property Damage', 'Environmental','Security']"           
-                        label="Category of Incident"                        
+
+                        <v-autocomplete
+                        v-model="editedItem.category_incident" :items="['Nearmiss', 'Personal Injury', 'Property Damage', 'Environmental','Security']"
+                        label="Category of Incident"
                         >
                         </v-autocomplete>
 
@@ -146,11 +146,11 @@
                   </v-col>
 
                   <v-col cols="6" sm="6" md="6">
-                 
 
-                    <v-autocomplete 
-                        v-model="editedItem.type_injury" :items="['First Aid Case', 'Medical Treatment Case', 'Lost Time Injury', 'Environmental','Security','none']"           
-                        label="Type of Injury"                        
+
+                    <v-autocomplete
+                        v-model="editedItem.type_injury" :items="['First Aid Case', 'Medical Treatment Case', 'Lost Time Injury', 'Environmental','Security','none']"
+                        label="Type of Injury"
                         >
                         </v-autocomplete>
 
@@ -158,12 +158,12 @@
                   </v-col>
 
                   <v-col cols="6" sm="6" md="6">
-                     <v-autocomplete 
-                        v-model="editedItem.type_incident" :items="['Event Equipment', 'Scaffolding Collapse', 'Road Traffic Accident', 'Falls from Height','Other']"           
-                        label="Type of Incident"                        
+                     <v-autocomplete
+                        v-model="editedItem.type_incident" :items="['Event Equipment', 'Scaffolding Collapse', 'Road Traffic Accident', 'Falls from Height','Other']"
+                        label="Type of Incident"
                         >
                         </v-autocomplete>
-                        
+
                     <div style="color:red;" v-if="errors.type_incident">{{errors.type_incident[0]}}</div>
                   </v-col>
 
@@ -181,7 +181,7 @@
                     <v-text-field v-model="editedItem.describe_incident" label="Describe the Incident"></v-text-field>
                     <div style="color:red;" v-if="errors.describe_incident">{{errors.describe_incident[0]}}</div>
                   </v-col>
-                
+
                   <v-col cols="6" sm="6" md="6">
                     <v-text-field v-model="editedItem.immediate_action" label="Immediate Action"></v-text-field>
                     <div style="color:red;" v-if="errors.immediate_action">{{errors.immediate_action[0]}}</div>
@@ -191,8 +191,8 @@
                     <v-text-field v-model="editedItem.attachment" label="Attachment"></v-text-field>
                     <div style="color:red;" v-if="errors.attachment">{{errors.attachment[0]}}</div>
                   </v-col>
-                  
-                 
+
+
                 </v-row>
               </v-container>
             </v-card-text>
@@ -201,15 +201,15 @@
               <v-spacer></v-spacer>
               <v-btn small class="primary" text @click="close">Cancel</v-btn>
               <v-btn small class="secondary" text @click="save">Save</v-btn>
-              
+
             </v-card-actions>
 
-          
+
 
           </v-card>
 
         </v-dialog>
-      
+
       </v-toolbar>
     </template>
     <template v-slot:item.attachment="{ item }">
@@ -236,18 +236,18 @@
             </template>
 
             <v-img height="100%" width="100%"  :src="item.attachment"></v-img>
-            </v-dialog> 
+            </v-dialog>
 
-       
+
       </template>
       </v-img>
 
-         
+
 
 
     </template>
 
-    
+
 
     <template v-slot:item.actions="{ item }">
       <v-icon
@@ -274,11 +274,11 @@
   export default {
     data: () => ({
 
-       entity : 'Accident Incident',  
+       entity : 'Accident Incident',
        menu: false,
        menu1: false,
-       
-    
+
+
       dialog: false,
       dialog1 : false,
       isActive: true,
@@ -289,9 +289,9 @@
           sortable: true,
           value: 'attachment',
 
-          
+
           },
-       
+
 
          {
           text: 'Report Date',
@@ -315,7 +315,7 @@
           sortable: true,
           value: 'category_incident',
         },
-        
+
          {
           text: 'Type Injury',
           sortable: true,
@@ -331,21 +331,21 @@
           sortable: true,
           value: 'other',
         },
-        
-        
+
+
          {
           text: 'Fatality',
           sortable: true,
           value: 'fatality',
         },
-        
+
          {
           text: 'Description Incident',
           sortable: true,
           value: 'describe_incident',
         },
-        
-       
+
+
          {
           text: 'Action',
           sortable: true,
@@ -353,29 +353,29 @@
         },
 
 
-       
+
         { text: 'Delete', value: 'actions', sortable: false },
 
       ],
       data: [],
       editedIndex: -1,
       editedItem: {
-        attachment : 'test', 
-        location : 'test',  
-        reported_date : null, 
-        reported_time : null, 
-        category_incident : 'test', 
-        type_injury : 'test', 
-        type_incident : 'test', 
-        other : 'test', 
-        fatality : 'test', 
-        describe_incident : 'test', 
+        attachment : 'test',
+        location : 'test',
+        reported_date : null,
+        reported_time : null,
+        category_incident : 'test',
+        type_injury : 'test',
+        type_incident : 'test',
+        other : 'test',
+        fatality : 'test',
+        describe_incident : 'test',
         immediate_action : 'test',
         user_id : '',
         project_id : ''
 
       },
-    
+
       errors:[],
       Rules : [
           v => !!v || 'This field is required',
@@ -387,7 +387,7 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
-     
+
     },
 
     watch: {
@@ -403,11 +403,10 @@
     methods: {
       initialize () {
 
-       this.$axios.get(`accidentincident`).then(res => console.log(this.data = res.data));
+      this.$axios.get(`accidentincident/project/${this.$store.state.project.project.id}`).then(res => this.data = res.data);
 
-       console.log(this.editedItem);
 
-      
+
       },
 
       editItem (item) {
@@ -419,14 +418,14 @@
       },
 
       deleteItem (item) {
-       
-         confirm('Are you sure you want to delete this item?') && 
+
+         confirm('Are you sure you want to delete this item?') &&
          this.$axios.delete('accidentincident/'+item.id)
             .then((res) => {
-     
+
               const index = this.data.indexOf(item)
               this.data.splice(index, 1)
-            
+
             });
       },
 
@@ -438,10 +437,10 @@
         })
       },
 
-    
+
 
       save () {
-           
+
           let form_data = new FormData();
 
           form_data.append('user_id',this.editedItem.user_id);
@@ -458,10 +457,10 @@
           form_data.append('immediate_action',this.editedItem.immediate_action);
           form_data.append('attachment',this.editedItem.attachment);
 
-          
+
               this.$axios.post('accidentincident/',form_data)
               .then((res) => {
-                   
+
                   if(res.data.success){
                     console.log(res.data);
                     this.close()
@@ -473,7 +472,7 @@
             })
             .catch(err => console.log(this.errors = err.response.data.errors));
         }
-     
+
     },
   }
 </script>

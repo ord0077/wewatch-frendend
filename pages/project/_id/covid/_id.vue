@@ -8,20 +8,42 @@
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>{{entity}}</v-toolbar-title>
-      
-        <v-text-field   
+
+        <v-text-field
         class="mx-4"
         label="Search"
         hide-details v-model="search"></v-text-field>
-         
+
       </v-toolbar>
     </template>
     <template v-slot:item.image="{ item }">
+
 
       <!-- {{item.image}} -->
         <img height="150px" width="150px"  :src="item.image" />
 
     </template>
+
+    <template v-slot:item.open_file="{ item }">
+       {{ item }}
+      <a :href="`/${item.id}`" target="_blank">
+
+        <v-btn
+        small
+        class="primary">
+        Open File &nbsp; {{ item.id }}
+        <v-icon
+        small
+
+        >
+        mdi-open-in-new
+        </v-icon>
+        </v-btn>
+
+      </a>
+
+
+  </template>
 
     <template v-slot:item.actions="{ item }">
       <!-- <v-icon
@@ -48,7 +70,7 @@
   export default {
     data: () => ({
 
-      entity : 'Covid',  
+      entity : 'Covid',
       dialog: false,
       isActive: true,
       search:'',
@@ -64,9 +86,9 @@
           value: 'project.project_name',
         },
          {
-          text: 'Image',
+          text: 'FIle',
           sortable: true,
-          value: 'image',
+          value: 'open_file',
         },
         {
           text: 'Staff Name',
@@ -83,8 +105,8 @@
           sortable: false,
           value: 'remarks',
         },
-      
-       
+
+
         { text: 'Actions', value: 'actions', sortable: false },
 
       ],
@@ -120,7 +142,7 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
-     
+
     },
 
     watch: {
@@ -138,7 +160,13 @@
 
       this.$axios.get(`covid`).then(res => this.data = res.data);
 
-      
+
+      },
+
+      openFile(){
+
+        this.$router.push(`/project/${item.id}`);
+
       },
 
       editItem (item) {
@@ -150,14 +178,14 @@
       },
 
       deleteItem (item) {
-       
-         confirm('Are you sure you want to delete this item?') && 
+
+         confirm('Are you sure you want to delete this item?') &&
          this.$axios.delete('covid/'+item.id)
             .then((res) => {
-     
+
               const index = this.data.indexOf(item)
               this.data.splice(index, 1)
-            
+
             });
       },
 
@@ -178,7 +206,7 @@
                   this.close()
                 }
 
-              });   
+              });
               }
       },
 
