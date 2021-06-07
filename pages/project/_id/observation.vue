@@ -24,13 +24,6 @@
     </template>
 
     <template v-slot:item.actions="{ item }">
-      <!-- <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon> -->
       <v-icon
         small
         @click="deleteItem(item)"
@@ -49,8 +42,6 @@
     data: () => ({
 
       entity : 'Observation',
-      dialog: false,
-      isActive: true,
       search:'',
       headers: [
          {
@@ -84,31 +75,6 @@
 
       ],
       data: [],
-      editedIndex: -1,
-      editedItem: {
-      role_id: 5,
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      mobile_no: "",
-      },
-      defaultItem: {
-      role_id: 5,
-      department_id : "",
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      mobile_no: "",
-      confirm_password: ""
-      },
-      change_password: "",
-      errors:[],
-      Rules : [
-          v => !!v || 'This field is required',
-        ],
-
     }),
 
     computed: {
@@ -118,12 +84,6 @@
 
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-
     created () {
       this.initialize()
     },
@@ -131,23 +91,13 @@
     methods: {
       initialize () {
 
-          console.log(this.$store.state.project.project.id)
-
-            this.$axios.get(`observation/project/${this.$store.state.project.project.id}`)
+          this.$axios.get(`observation/project/${this.$route.params.id}`)
             .then(res => {
-              console.log(this.data = res.data);
+            this.data = res.data;
             });
 
 
 
-      },
-
-      editItem (item) {
-        this.editedIndex = this.data.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.isActive = item.isactive
-        this.errors = []
-        this.dialog = true
       },
 
       deleteItem (item) {
@@ -161,19 +111,6 @@
 
             });
       },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-
-
-
-
     },
   }
 </script>

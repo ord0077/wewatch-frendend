@@ -1,6 +1,7 @@
 <template>
   <v-app dark>
     <v-navigation-drawer
+    style="min-height: 100%;     z-index: 0;"
     class="primary"
     dark
       v-model="drawer"
@@ -55,10 +56,11 @@
       </v-btn> -->
       <!-- <v-toolbar-title v-text="title" /> -->
 
+        <Logo class="hidden-sm-and-down" src="/logo.png" alt="login" style="width:15%;margin: 15px;" />
+        <Logo class="hidden-md-and-up" src="/logo.png" alt="login" style="width: 70%; margin: 20px; padding: 10px;" />
 
-
-        <img class="hidden-sm-and-down" src="/logo.png" alt="login" style="width:15%;margin: 15px;">
-        <img class="hidden-md-and-up" src="/logo.png" alt="login" style="width: 70%; margin: 20px; padding: 10px;">
+        <!-- <img class="hidden-sm-and-down" src="/logo.png" alt="login" style="width:15%;margin: 15px;">
+        <img class="hidden-md-and-up" src="/logo.png" alt="login" style="width: 70%; margin: 20px; padding: 10px;"> -->
 
       <v-spacer />
        <span class="secondary--text hidden-sm-and-down">{{Greetings}}</span>

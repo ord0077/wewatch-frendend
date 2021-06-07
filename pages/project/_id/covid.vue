@@ -25,13 +25,14 @@
     </template>
 
     <template v-slot:item.open_file="{ item }">
-       {{ item }}
-      <a :href="`/${item.id}`" target="_blank">
+
+      <a :href="`/project/${item.project_id}/covid/${item.id}`">
 
         <v-btn
         small
         class="primary">
-        Open File &nbsp; {{ item.id }}
+        Open File &nbsp;
+
         <v-icon
         small
 
@@ -83,7 +84,7 @@
          {
           text: 'Project',
           sortable: true,
-          value: 'project.project_name',
+          value: 'project.id',
         },
          {
           text: 'FIle',
@@ -143,6 +144,10 @@
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
 
+
+
+
+
     },
 
     watch: {
@@ -158,7 +163,7 @@
     methods: {
       initialize () {
 
-      this.$axios.get(`covid`).then(res => this.data = res.data);
+        this.$axios.get(`covid/project/${this.$route.params.id}`).then(res => this.data = res.data);
 
 
       },

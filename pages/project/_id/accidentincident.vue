@@ -7,7 +7,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>{{entity}}</v-toolbar-title>
+        <v-toolbar-title>{{entity}} </v-toolbar-title>
 
         <v-text-field
         label="Search"
@@ -250,13 +250,13 @@
 
 
     <template v-slot:item.actions="{ item }">
-      <v-icon
+      <!-- <v-icon
         small
         class="mr-2"
         @click="editItem(item)"
       >
         mdi-pencil
-      </v-icon>
+      </v-icon> -->
       <v-icon
         small
         @click="deleteItem(item)"
@@ -403,7 +403,8 @@
     methods: {
       initialize () {
 
-      this.$axios.get(`accidentincident/project/${this.$store.state.project.project.id}`).then(res => this.data = res.data);
+      this.$axios.get(`accidentincident/project/${this.$route.params.id}`)
+        .then(res => this.data = res.data);
 
 
 

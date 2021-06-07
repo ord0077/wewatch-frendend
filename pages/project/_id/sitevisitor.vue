@@ -8,12 +8,12 @@
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title>{{entity}}</v-toolbar-title>
-      
-        <v-text-field   
+
+        <v-text-field
           class="mx-4"
         label="Search"
         hide-details v-model="search"></v-text-field>
-         
+
       </v-toolbar>
     </template>
     <template v-slot:item.image="{ item }">
@@ -48,12 +48,12 @@
   export default {
     data: () => ({
 
-      entity : 'Daily Site Visitor',  
+      entity : 'Daily Site Visitor',
       dialog: false,
       isActive: true,
       search:'',
       headers: [
-     
+
         //  {
         //   text: 'project',
         //   sortable: true,
@@ -75,7 +75,7 @@
           sortable: true,
           value: 'driver_contact',
         },
-        
+
          {
           text: 'visit reason',
           sortable: true,
@@ -92,7 +92,7 @@
         //   value: 'id_attachment',
         // },
 
-       
+
         { text: 'Action', value: 'actions', sortable: false },
 
       ],
@@ -128,7 +128,7 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
-     
+
     },
 
     watch: {
@@ -144,12 +144,8 @@
     methods: {
       initialize () {
 
-      this.$axios.get(`dailyvisitorsregister`).then(res => {
-        console.log(res.data);
-        console.log(this.data = res.data);
-      });
+      this.$axios.get(`dailyvisitorsregister/project/${this.$route.params.id}`).then(res => this.data = res.data);
 
-      
       },
 
       editItem (item) {
@@ -161,14 +157,14 @@
       },
 
       deleteItem (item) {
-       
-         confirm('Are you sure you want to delete this item?') && 
+
+         confirm('Are you sure you want to delete this item?') &&
          this.$axios.delete('accidentincident/'+item.id)
             .then((res) => {
-     
+
               const index = this.data.indexOf(item)
               this.data.splice(index, 1)
-            
+
             });
       },
 
@@ -180,10 +176,10 @@
         })
       },
 
-    
 
-      
-     
+
+
+
     },
   }
 </script>

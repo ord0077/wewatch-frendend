@@ -13,7 +13,7 @@
       </v-card>
        </v-col>
         -->
-        <v-col cols="12" sm="12" md="11" >
+        <v-col cols="12" sm="12" md="12" >
                 <v-alert class="secondary white--text">
                     <span class="seondary--text">Project : {{project.project_name}}</span>
 
@@ -23,7 +23,7 @@
 
        </v-col>
 
-          <v-col cols="2" sm="12" md="1" >
+          <!-- <v-col cols="2" sm="12" md="1" >
             <v-btn to="/project" class="primary white--text" height="55px" width="100%">
 
                    Go Back
@@ -31,7 +31,7 @@
 
 
 
-       </v-col>
+       </v-col> -->
 
 
 
