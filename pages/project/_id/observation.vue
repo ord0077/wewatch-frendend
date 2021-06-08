@@ -1,9 +1,15 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="data.data"
     :search="search"
     class="elevation-1"
+    @pagination="paginate"
+    :server-items-length="data.total"
+    :items-per-page="5"
+    :footer-props="{
+      itemsPerPageOptions : [5,10,15,20]
+    }"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -23,6 +29,9 @@
 
     </template>
 
+    <!-- <template v-slot:item.ser="{ item }">
+      {{ ser += 1 }}
+    </template> -->
     <template v-slot:item.actions="{ item }">
       <v-icon
         small
@@ -31,9 +40,6 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn small color="primary" @click="initialize">Reset</v-btn>
-    </template>
   </v-data-table>
 </template>
 
@@ -41,10 +47,17 @@
   export default {
     data: () => ({
 
+      ser : 0,
+
       entity : 'Observation',
       search:'',
       headers: [
-         {
+        //  {
+        //   text: 'Sr No',
+        //   sortable: true,
+        //   value: 'ser',
+        // },
+          {
           text: 'Attachments',
           sortable: true,
           value: 'attachments',
@@ -53,6 +66,11 @@
           text: 'Project',
           sortable: true,
           value: 'project.project_name',
+        },
+         {
+          text: 'Report Type',
+          sortable: true,
+          value: 'report',
         },
          {
           text: 'Action',
@@ -84,19 +102,15 @@
 
     },
 
-    created () {
-      this.initialize()
-    },
-
     methods: {
-      initialize () {
+      paginate (e) {
+           this.$axios.get(`observation/project/${this.$route.params.id}?page=${e.page}`, {
 
-          this.$axios.get(`observation/project/${this.$route.params.id}`)
-            .then(res => {
-            this.data = res.data;
+                params: { per_page : e.itemsPerPage}
+
+              }).then(res => {
+                this.data = res.data;
             });
-
-
 
       },
 

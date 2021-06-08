@@ -1,9 +1,16 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="data.data"
     :search="search"
     class="elevation-1"
+    @pagination="paginate"
+    :server-items-length="data.total"
+    :items-per-page="5"
+    :footer-props="{
+    itemsPerPageOptions : [5,10,15,20]
+    }"
+
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -61,9 +68,7 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn small color="primary" @click="initialize">Reset</v-btn>
-    </template>
+
   </v-data-table>
 </template>
 
@@ -72,8 +77,6 @@
     data: () => ({
 
       entity : 'Covid',
-      dialog: false,
-      isActive: true,
       search:'',
       headers: [
         {
@@ -112,30 +115,6 @@
 
       ],
       data: [],
-      editedIndex: -1,
-      editedItem: {
-      role_id: 5,
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      mobile_no: "",
-      },
-      defaultItem: {
-      role_id: 5,
-      department_id : "",
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      mobile_no: "",
-      confirm_password: ""
-      },
-      change_password: "",
-      errors:[],
-      Rules : [
-          v => !!v || 'This field is required',
-        ],
 
     }),
 
@@ -144,44 +123,28 @@
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
 
-
-
-
-
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-
-    created () {
-      this.initialize()
     },
 
     methods: {
-      initialize () {
 
-        this.$axios.get(`covid/project/${this.$route.params.id}`).then(res => this.data = res.data);
+          paginate (e) {
+           this.$axios.get(`covid/project/${this.$route.params.id}?page=${e.page}`, {
+
+                params: { per_page : e.itemsPerPage}
+
+              }).then(res => {
+                this.data = res.data;
+            });
+        },
 
 
-      },
+
 
       openFile(){
 
         this.$router.push(`/project/${item.id}`);
 
       },
-
-      editItem (item) {
-        this.editedIndex = this.data.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.isActive = item.isactive
-        this.errors = []
-        this.dialog = true
-      },
-
       deleteItem (item) {
 
          confirm('Are you sure you want to delete this item?') &&
@@ -192,27 +155,6 @@
               this.data.splice(index, 1)
 
             });
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      change_password_func(){
-        if(this.$refs.change_password_ref.validate()){
-
-          this.$axios.post('change_password/'+this.editedItem.id,{change_password:this.change_password})
-              .then((res) => {
-                if(res.data.success){
-                  this.close()
-                }
-
-              });
-              }
       },
 
 

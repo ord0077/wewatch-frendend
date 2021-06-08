@@ -1,9 +1,15 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="data.data"
     :search="search"
     class="elevation-1"
+    @pagination="paginate"
+    :server-items-length="data.total"
+    :items-per-page="5"
+    :footer-props="{
+    itemsPerPageOptions : [5,10,15,20]
+    }"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -16,10 +22,54 @@
 
       </v-toolbar>
     </template>
-    <template v-slot:item.image="{ item }">
+
+    <template v-slot:item.attachment="{ item }">
+
+        <v-img v-if="item && item.attachment" height="150px" width="150px"  :src="item.attachment">
+        <template v-slot:placeholder>
+        <v-row
+          class="fill-height ma-0"
+          align="center"
+          justify="center"
+        >
+          <v-progress-circular
+            indeterminate
+            color="grey lighten-5"
+          >
+          </v-progress-circular>
+        </v-row>
+
+         <v-dialog v-model="dialog1" max-width="800px">
+            <template v-slot:activator="{ on }">
+            <div class="pa-5">
+                  <v-img v-on="on" height="100px" width="150px" :src="item.attachment"></v-img>
+            </div>
+            </template>
+
+            <v-img height="100%" width="100%"  :src="item.attachment"></v-img>
+            </v-dialog>
 
 
-        <img height="150px" width="150px"  :src="item.image" />
+      </template>
+      </v-img>
+
+    </template>
+
+
+
+    <template v-slot:item.id_attachment="{ item }">
+
+
+        <img height="150px" width="150px"  :src="item.id_attachment" />
+
+    </template>
+
+
+
+    <template v-slot:item.car_attachment="{ item }">
+
+
+        <img height="150px" width="150px"  :src="item.car_attachment" />
 
     </template>
 
@@ -38,9 +88,7 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn small color="primary" @click="initialize">Reset</v-btn>
-    </template>
+
   </v-data-table>
 </template>
 
@@ -53,22 +101,26 @@
       isActive: true,
       search:'',
       headers: [
-
-        //  {
-        //   text: 'project',
-        //   sortable: true,
-        //   value: 'project_id',
-        // },
-        // {
-        //   text: 'user',
-        //   sortable: true,
-        //   value: 'user_id',
-        // },
          {
           text: 'company',
           sortable: true,
           value: 'company_name',
         },
+        {
+          text: 'ID Attachment',
+          sortable: true,
+          value: 'id_attachment',
+
+
+          },
+
+           {
+          text: 'Car Attachment',
+          sortable: true,
+          value: 'car_attachment',
+
+
+          },
 
          {
           text: 'driver',
@@ -81,46 +133,10 @@
           sortable: true,
           value: 'visit_reason',
         },
-        //   {
-        //   text: 'car attachment',
-        //   sortable: true,
-        //   value: 'car_attachment',
-        // },
-        //  {
-        //   text: 'id attachment',
-        //   sortable: true,
-        //   value: 'id_attachment',
-        // },
-
-
         { text: 'Action', value: 'actions', sortable: false },
 
       ],
       data: [],
-      editedIndex: -1,
-      editedItem: {
-      role_id: 5,
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      mobile_no: "",
-      },
-      defaultItem: {
-      role_id: 5,
-      department_id : "",
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      mobile_no: "",
-      confirm_password: ""
-      },
-      change_password: "",
-      errors:[],
-      Rules : [
-          v => !!v || 'This field is required',
-        ],
 
     }),
 
@@ -131,35 +147,22 @@
 
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-
-    created () {
-      this.initialize()
-    },
-
     methods: {
-      initialize () {
 
-      this.$axios.get(`dailyvisitorsregister/project/${this.$route.params.id}`).then(res => this.data = res.data);
+      paginate (e) {
+           this.$axios.get(`dailyvisitorsregister/project/${this.$route.params.id}?page=${e.page}`, {
 
-      },
+                params: { per_page : e.itemsPerPage}
 
-      editItem (item) {
-        this.editedIndex = this.data.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.isActive = item.isactive
-        this.errors = []
-        this.dialog = true
-      },
+              }).then(res => {
+                this.data = res.data;
+            });
+        },
 
       deleteItem (item) {
 
          confirm('Are you sure you want to delete this item?') &&
-         this.$axios.delete('accidentincident/'+item.id)
+         this.$axios.delete('dailyvisitorsregister/'+item.id)
             .then((res) => {
 
               const index = this.data.indexOf(item)
@@ -167,18 +170,6 @@
 
             });
       },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-
-
-
 
     },
   }

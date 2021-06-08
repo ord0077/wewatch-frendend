@@ -1,9 +1,15 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="data"
+    :items="data.data"
     :search="search"
     class="elevation-1"
+    @pagination="paginate"
+    :server-items-length="data.total"
+    :items-per-page="5"
+    :footer-props="{
+      itemsPerPageOptions : [5,10,15,20]
+    }"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -13,205 +19,9 @@
         label="Search"
         class="mx-4"
         hide-details v-model="search"></v-text-field>
-
-        <v-btn class="primary" @click="save">Add Data</v-btn>
-
-
-
-        <v-dialog v-model="dialog" max-width="900px">
-
-          <v-card>
-
-            <v-card-title>
-              <span class="headline">{{ formTitle }} {{entity}}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-
-
-                  <v-col cols="6" sm="6" md="12">
-                    <v-text-field v-model="editedItem.location" label="Location"></v-text-field>
-                    <div style="color:red;" v-if="errors.location">{{errors.location[0]}}</div>
-                  </v-col>
-
-                   <v-col cols="6" sm="6" md="6">
-
-
-                          <v-menu
-                          ref="menu"
-                          v-model="menu"
-                          :close-on-content-click="false"
-                          :return-value.sync="editedItem.reported_date"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                          >
-                          <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                          v-model="editedItem.reported_date"
-                          label="Reported Date"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          ></v-text-field>
-                          </template>
-                          <v-date-picker
-                          v-model="editedItem.reported_date"
-                          no-title
-                          scrollable
-                          >
-                          <v-spacer></v-spacer>
-                          <v-btn
-                          text
-                          color="primary"
-                          @click="menu = false"
-                          >
-                          Cancel
-                          </v-btn>
-                          <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.menu.save(editedItem.reported_date)"
-                          >
-                          OK
-                          </v-btn>
-                          </v-date-picker>
-                          </v-menu>
-                    <div style="color:red;" v-if="errors.reported_date">{{errors.reported_date[0]}}</div>
-                  </v-col>
-
-
-
-                   <v-col cols="6" sm="6" md="6">
-
-                     <v-menu
-                          ref="menu1"
-                          v-model="menu1"
-                          :close-on-content-click="false"
-                          :return-value.sync="editedItem.reported_time"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                          >
-                          <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                          v-model="editedItem.reported_time"
-                          label="Reported Time"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          ></v-text-field>
-                          </template>
-                          <v-time-picker
-                          v-model="editedItem.reported_time"
-                          no-title
-                          scrollable
-                          >
-                          <v-spacer></v-spacer>
-                          <v-btn
-                          text
-                          color="primary"
-                          @click="menu1 = false"
-                          >
-                          Cancel
-                          </v-btn>
-                          <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.menu1.save(editedItem.reported_time)"
-                          >
-                          OK
-                          </v-btn>
-                          </v-time-picker>
-                          </v-menu>
-
-
-
-                    <div style="color:red;" v-if="errors.reported_time">{{errors.reported_time[0]}}</div>
-                  </v-col>
-
-                   <v-col cols="6" sm="6" md="6">
-
-
-                        <v-autocomplete
-                        v-model="editedItem.category_incident" :items="['Nearmiss', 'Personal Injury', 'Property Damage', 'Environmental','Security']"
-                        label="Category of Incident"
-                        >
-                        </v-autocomplete>
-
-
-                    <div style="color:red;" v-if="errors.category_incident">{{errors.category_incident[0]}}</div>
-                  </v-col>
-
-                  <v-col cols="6" sm="6" md="6">
-
-
-                    <v-autocomplete
-                        v-model="editedItem.type_injury" :items="['First Aid Case', 'Medical Treatment Case', 'Lost Time Injury', 'Environmental','Security','none']"
-                        label="Type of Injury"
-                        >
-                        </v-autocomplete>
-
-                    <div style="color:red;" v-if="errors.type_injury">{{errors.type_injury[0]}}</div>
-                  </v-col>
-
-                  <v-col cols="6" sm="6" md="6">
-                     <v-autocomplete
-                        v-model="editedItem.type_incident" :items="['Event Equipment', 'Scaffolding Collapse', 'Road Traffic Accident', 'Falls from Height','Other']"
-                        label="Type of Incident"
-                        >
-                        </v-autocomplete>
-
-                    <div style="color:red;" v-if="errors.type_incident">{{errors.type_incident[0]}}</div>
-                  </v-col>
-
-                  <v-col cols="6" sm="6" md="6">
-                    <v-text-field v-model="editedItem.other" label="Other"></v-text-field>
-                    <div style="color:red;" v-if="errors.other">{{errors.other[0]}}</div>
-                  </v-col>
-
-                  <v-col cols="6" sm="6" md="6">
-                    <v-text-field v-model="editedItem.fatality" label="Fatality"></v-text-field>
-                    <div style="color:red;" v-if="errors.fatality">{{errors.fatality[0]}}</div>
-                  </v-col>
-
-                  <v-col cols="6" sm="6" md="6">
-                    <v-text-field v-model="editedItem.describe_incident" label="Describe the Incident"></v-text-field>
-                    <div style="color:red;" v-if="errors.describe_incident">{{errors.describe_incident[0]}}</div>
-                  </v-col>
-
-                  <v-col cols="6" sm="6" md="6">
-                    <v-text-field v-model="editedItem.immediate_action" label="Immediate Action"></v-text-field>
-                    <div style="color:red;" v-if="errors.immediate_action">{{errors.immediate_action[0]}}</div>
-                  </v-col>
-
-                <v-col cols="6" sm="6" md="6">
-                    <v-text-field v-model="editedItem.attachment" label="Attachment"></v-text-field>
-                    <div style="color:red;" v-if="errors.attachment">{{errors.attachment[0]}}</div>
-                  </v-col>
-
-
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn small class="primary" text @click="close">Cancel</v-btn>
-              <v-btn small class="secondary" text @click="save">Save</v-btn>
-
-            </v-card-actions>
-
-
-
-          </v-card>
-
-        </v-dialog>
-
       </v-toolbar>
     </template>
+
     <template v-slot:item.attachment="{ item }">
 
         <v-img v-if="item && item.attachment" height="150px" width="150px"  :src="item.attachment">
@@ -242,9 +52,6 @@
       </template>
       </v-img>
 
-
-
-
     </template>
 
 
@@ -264,9 +71,7 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn small color="primary" @click="initialize">Reset</v-btn>
-    </template>
+
   </v-data-table>
 </template>
 
@@ -277,11 +82,7 @@
        entity : 'Accident Incident',
        menu: false,
        menu1: false,
-
-
-      dialog: false,
       dialog1 : false,
-      isActive: true,
       search:'',
       headers: [
       {
@@ -358,29 +159,6 @@
 
       ],
       data: [],
-      editedIndex: -1,
-      editedItem: {
-        attachment : 'test',
-        location : 'test',
-        reported_date : null,
-        reported_time : null,
-        category_incident : 'test',
-        type_injury : 'test',
-        type_incident : 'test',
-        other : 'test',
-        fatality : 'test',
-        describe_incident : 'test',
-        immediate_action : 'test',
-        user_id : '',
-        project_id : ''
-
-      },
-
-      errors:[],
-      Rules : [
-          v => !!v || 'This field is required',
-        ],
-
     }),
 
     computed: {
@@ -390,33 +168,19 @@
 
     },
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-
-    created () {
-      this.initialize()
-    },
-
     methods: {
-      initialize () {
-
-      this.$axios.get(`accidentincident/project/${this.$route.params.id}`)
-        .then(res => this.data = res.data);
 
 
+        paginate (e) {
+           this.$axios.get(`accidentincident/project/${this.$route.params.id}?page=${e.page}`, {
 
-      },
+                params: { per_page : e.itemsPerPage}
 
-      editItem (item) {
-        this.editedIndex = this.data.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.isActive = item.isactive
-        this.errors = []
-        this.dialog = true
-      },
+              }).then(res => {
+                this.data = res.data;
+            });
+        },
+
 
       deleteItem (item) {
 
@@ -429,50 +193,6 @@
 
             });
       },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-
-
-      save () {
-
-          let form_data = new FormData();
-
-          form_data.append('user_id',this.editedItem.user_id);
-          form_data.append('project_id',this.editedItem.project_id);
-          form_data.append('location',this.editedItem.location);
-          form_data.append('reported_date',this.editedItem.reported_date);
-          form_data.append('reported_time',this.editedItem.reported_time);
-          form_data.append('category_incident',this.editedItem.category_incident);
-          form_data.append('type_injury',this.editedItem.type_injury);
-          form_data.append('type_incident',this.editedItem.type_incident);
-          form_data.append('other',this.editedItem.other);
-          form_data.append('fatality',this.editedItem.fatality);
-          form_data.append('describe_incident',this.editedItem.describe_incident);
-          form_data.append('immediate_action',this.editedItem.immediate_action);
-          form_data.append('attachment',this.editedItem.attachment);
-
-
-              this.$axios.post('accidentincident/',form_data)
-              .then((res) => {
-
-                  if(res.data.success){
-                    console.log(res.data);
-                    this.close()
-                    this.errors = []
-                  }
-                  else{
-                    this.errors = res.data.errors
-                  }
-            })
-            .catch(err => console.log(this.errors = err.response.data.errors));
-        }
 
     },
   }
