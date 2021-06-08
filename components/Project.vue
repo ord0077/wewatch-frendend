@@ -1,15 +1,9 @@
 <template>
 <v-data-table
   :headers="headers"
-  :items="data.data"
+  :items="data"
   :search="search"
   class="elevation-1"
-   @pagination="paginate"
-    :server-items-length="data.total"
-    :items-per-page="5"
-    :footer-props="{
-      itemsPerPageOptions : [5,10,15,20]
-    }"
 >
   <template v-slot:top>
     <v-toolbar flat color="white">
@@ -441,13 +435,14 @@ export default {
 
     },
     initialize () {
-
+         
+         this.getData();
          this.getClients();
 
     },
 
 
-    paginate (e) {
+    getData () {
 
          var url  = '';
           if(this.isManager){
@@ -460,13 +455,8 @@ export default {
             url = 'project';
           }
 
-           this.$axios.get(`${url}?page=${e.page}`, {
-
-                params: { per_page : e.itemsPerPage}
-
-              }).then(res => {
+           this.$axios.get(url).then(res => {
                 this.data = res.data;
-                console.log(res.data)
             });
         },
 
