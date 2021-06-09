@@ -95,7 +95,7 @@
           </v-col>
   </v-row>
 
-  <v-row v-if="isProjectAdmin || isManager">
+  <v-row v-if="isProjectAdmin || isManager || isProjectAdmin">
     <v-col md="12"><Project /></v-col>
   </v-row>
 
@@ -203,8 +203,9 @@ export default {
     },
 
     isProjectAdmin () {
-
+      return this.$auth.user && this.$auth.user.user_type == 'project Admin'
     },
+
     isManager () {
       return this.$auth.user && this.$auth.user.user_type == 'Wewatch Manager'
     }
