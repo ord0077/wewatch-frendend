@@ -1,11 +1,11 @@
 <template>
     <v-container>
 
-    
+
     <v-row>
               <div class="text-center">
 
-            
+
               </div>
         <v-col cols="12" md="6">
         <v-toolbar dense flat class="primary" dark><b>Allocate for the Project</b>
@@ -21,7 +21,7 @@
         cols="12"
         sm="12"
         >
-        
+
         <v-select
         :rules="[v => !!v || 'This field is required']"
         v-model="project_id"
@@ -32,12 +32,12 @@
         label="Select project"
         ></v-select>
         </v-col>
-        
+
 
         <v-row>
         <v-col cols="12" class="pa-5" md="4" sm="12">
         Managers
-        <v-checkbox 
+        <v-checkbox
         @change="for_manager_ids"
         v-model="check_all_manager_ids"
         label="Select All"
@@ -54,9 +54,9 @@
 
         <v-col cols="12" class="pa-5" md="4" sm="12">
         Users
-        <v-checkbox 
-        @change="for_user_ids" 
-        v-model="check_all_user_ids" 
+        <v-checkbox
+        @change="for_user_ids"
+        v-model="check_all_user_ids"
         label="Select All"
         ></v-checkbox>
 
@@ -71,9 +71,9 @@
 
                 <v-col cols="12" class="pa-5" md="4" sm="12">
         Guards
-        <v-checkbox 
-        @change="for_guard_ids" 
-        v-model="check_all_guard_ids" 
+        <v-checkbox
+        @change="for_guard_ids"
+        v-model="check_all_guard_ids"
         label="Select All"
         ></v-checkbox>
 
@@ -96,9 +96,9 @@
         </v-card>
 
         </v-col>
-       
+
             <v-col cols="12" md="6">
-                
+
             <v-toolbar dense flat class="secondary" dark><b>Allocations</b></v-toolbar>
 
             <!-- <v-text-field v-model="search" placeholder="search"/> -->
@@ -113,7 +113,7 @@
             <template v-slot:item.users="{ item }">
                 <v-chip v-for="(val,i) in item.users" :key="i" class="primary ma-1" small v-text="val" />
             </template>
-            
+
             <template v-slot:item.managers="{ item }">
                 <v-chip v-for="(val,i) in item.managers" :key="i" class="primary ma-1" small v-text="val" />
             </template>
@@ -121,23 +121,23 @@
             <template v-slot:item.guards="{ item }">
                 <v-chip v-for="(val,i) in item.guards" :key="i" class="primary ma-1" small v-text="val" />
             </template>
-            
-            <template v-slot:item.action="{ item }"> 
+
+            <template v-slot:item.action="{ item }">
                 <v-chip @click="editItem(item)" small class="primary">View | Edit</v-chip>
-                <v-chip :loading="loader"  @click="deleteItem(item)" small class="error">Delete</v-chip>            
-            </template>    
+                <v-chip :loading="loader"  @click="deleteItem(item)" small class="error">Delete</v-chip>
+            </template>
 
             </v-data-table>
-            
+
             </v-col>
-       
+
 
 
         <v-row>
         <!-- <v-col cols="6">
         <v-toolbar dense flat class="secondary" dark><b>Free Managers</b></v-toolbar>
             <v-card>
-            
+
             <v-list  v-for="(item, i) in users" :key="i">
             <v-list-item>
             {{item.name}}
@@ -147,11 +147,11 @@
         </v-card>
 
         </v-col>
-        
+
         <v-col cols="6">
         <v-toolbar dense flat class="secondary" dark><b>Free Users</b></v-toolbar>
         <v-card>
-        
+
 
         <v-list v-for="(item, i) in users" :key="i">
         <v-list-item>
@@ -163,8 +163,8 @@
 
         </v-col> -->
 
-        </v-row>     
-   
+        </v-row>
+
     </v-row>
 </v-container>
 
@@ -174,7 +174,7 @@
   export default {
     data () {
       return {
-      
+
         top : true,
         snackbar: false,
         timeout: 2000,
@@ -207,11 +207,11 @@
           sortable: false,
           value: 'action',
         },
-    
-      ],  
+
+      ],
         search:'',
         project_id: '',
-        guard_ids : [], 
+        guard_ids : [],
         user_ids : [],
         manager_ids : [],
         data : [],
@@ -222,7 +222,7 @@
         GeneralRules : [
            v => this.guard_ids.length || this.manager_ids.length || this.user_ids.length ? !!v : 'This field is required'
         ],
-        
+
         check:false,
         loader: false,
 
@@ -233,8 +233,8 @@
         this.$axios.get('/allocation').then(res => {
           this.data = res.data.data
         });
-            
-            
+
+
             this.$axios.get(`get_users_by_id/${7}`)
             .then(res => {
             this.guards = res.data.data;
@@ -255,8 +255,6 @@
     },
     methods:{
 
-      
-       
 
       getProjects(){
           this.$axios.get('/CheckProjectWithAllocation')
@@ -264,26 +262,26 @@
       },
         editItem (item) {
           this.$router.push('/allocations/' + item.id);
-        }, 
+        },
 
          deleteItem (item) {
-             confirm('Are you sure you want to delete this item?') && 
+             confirm('Are you sure you want to delete this item?') &&
               this.$axios.delete('allocation/'+item.id)
             .then((res) => {
-     
+
               const index = this.data.indexOf(item)
               this.data.splice(index, 1)
 
-            
+
 
               this.getProjects();
                this.delete();
-            
+
             });
 
-        }, 
-        
-       
+        },
+
+
 
         for_guard_ids(){
           this.guard_ids = this.check_all_guard_ids ? this.guards.map(v => v.id) : [] ;
@@ -313,17 +311,17 @@
         })
 
         },
-         
+
         delete(){
         this.$swal.fire({
         icon: 'error',
-        title: 'Email has been deleted',
+        title: 'Allocation has been deleted',
         showConfirmButton: false,
         timer: 2000
         })
 
         },
-       
+
         submit(){
             let payload = {
                 project_id : this.project_id,
@@ -337,20 +335,20 @@
             if(this.$refs.form.validate()){
 
             this.$axios.post('/allocation',payload)
-                .then((res) =>{ 
+                .then((res) =>{
 
                   if(res.data.success){
 
-                    this.success() 
-                  
-                    this.data.unshift(res.data.data); 
+                    this.success()
+
+                    this.data.unshift(res.data.data);
                     this.getProjects();
 
                      setTimeout(() => location.reload() , 2000);
 
                     this.project_id = null;
                     this.user_ids = [];
-                    this.guard_ids = [];                    
+                    this.guard_ids = [];
                     this.manager_ids = [];
 
                     this.check_all_user_ids = false;
@@ -362,15 +360,15 @@
                    else{
 
                      this.failed();
-                    
-                    
+
+
                   }
-                    
-                    
-                                     
-                    
+
+
+
+
                 });
-              
+
                 }
                 this.loader = false;
         }
