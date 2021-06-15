@@ -67,6 +67,7 @@
         <v-col cols="12" class="pa-5" md="3" sm="12">
         Users
         <v-checkbox 
+        v-if="users && users.length !== 0"
         @change="for_user_ids" 
         v-model="check_all_user_ids" 
         label="Select All"
@@ -84,6 +85,7 @@
          <v-col cols="12" class="pa-5" md="3" sm="12">
         Guards
         <v-checkbox 
+        v-if="guards && guards.length !== 0"
         @change="for_guard_ids" 
         v-model="check_all_guard_ids" 
         label="Select All"
@@ -158,34 +160,30 @@
     created (){
         this.$axios.get('/allocation/' + this.$route.params.id)
             .then((res) => {
+
               this.guard_ids = res.data.guard_ids;
               this.manager_ids = res.data.manager_ids;
               this.user_ids = res.data.user_ids;
               this.project_id = res.data.project_id;
-              console.log(this.$route.params.id,res.data);
                 
             });
-             this.$axios.get('/project')
-            .then((res) => {
-                this.projects = res.data;
-            });
-            this.$axios.get(`get_users_by_id/${7}`)
-            .then(res => {
-            this.guards = res.data.data;
+
+
+           this.$axios.get('/getAssignedMembers/' + this.$route.params.id).then(res => {
+              this.guards = res.data.guards;
+              this.users = res.data.users;
             });
 
-            this.$axios.get(`get_users_by_id/${5}`)
-            .then(res => {
-            this.users = res.data.data;
-            });
+            this.getManagers();
 
-            this.$axios.get(`get_users_by_id/${4}`)
-            .then(res => {
-            this.managers = res.data.data;
-            });
+          this.$axios.get('/project').then((res) => this.projects = res.data );
 
     },
     methods:{
+
+        getManagers(){
+        this.$axios.get(`get_users_by_id/${4}`).then(res => this.managers = res.data.data);
+      },
 
         for_guard_ids(){
           this.guard_ids = this.check_all_guard_ids ? this.guards.map(v => v.id) : [] ;

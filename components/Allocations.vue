@@ -55,6 +55,7 @@
         <v-col cols="12" class="pa-5" md="4" sm="12">
         Users
         <v-checkbox
+        v-if="users && users.length !== 0"
         @change="for_user_ids"
         v-model="check_all_user_ids"
         label="Select All"
@@ -72,6 +73,7 @@
                 <v-col cols="12" class="pa-5" md="4" sm="12">
         Guards
         <v-checkbox
+        v-if="guards && guards.length !== 0"
         @change="for_guard_ids"
         v-model="check_all_guard_ids"
         label="Select All"
@@ -230,35 +232,37 @@
     },
 
     created (){
-        this.$axios.get('/allocation').then(res => {
-          this.data = res.data.data
-        });
 
+            this.getAllocations();
 
-            this.$axios.get(`get_users_by_id/${7}`)
-            .then(res => {
-            this.guards = res.data.data;
-            });
+            this.getAssignedMembers();
 
-            this.$axios.get(`get_users_by_id/${5}`)
-            .then(res => {
-            this.users = res.data.data;
-            });
-
-            this.$axios.get(`get_users_by_id/${4}`)
-            .then(res => {
-            this.managers = res.data.data;
-            });
+            this.getManagers();
 
             this.getProjects();
 
     },
     methods:{
 
+      getAllocations(){
+        this.$axios.get('/allocation').then(res => this.data = res.data.data);
+      },
+
+      getManagers(){
+        this.$axios.get(`get_users_by_id/${4}`).then(res => this.managers = res.data.data);
+      },
+
+      getAssignedMembers(){
+        this.$axios.get('/getAssignedMembers').then(res => {
+              this.guards = res.data.guards;
+              this.users = res.data.users;
+            });
+      },
+
 
       getProjects(){
           this.$axios.get('/CheckProjectWithAllocation')
-          .then((res) =>  console.log(this.projects  = res.data) );
+          .then((res) =>  this.projects  = res.data);
       },
         editItem (item) {
           this.$router.push('/allocations/' + item.id);
@@ -272,10 +276,13 @@
               const index = this.data.indexOf(item)
               this.data.splice(index, 1)
 
-
-
               this.getProjects();
-               this.delete();
+
+              this.getAssignedMembers();
+
+              this.getManagers();
+
+              this.delete();
 
             });
 
