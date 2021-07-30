@@ -73,7 +73,7 @@
 
     </template>
 
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:item.actions="{ item }" v-if="!isProjectAdmin" >
       <!-- <v-icon
         small
         class="mr-2"
@@ -144,6 +144,10 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
+
+       isProjectAdmin () {
+      return this.$auth.user && this.$auth.user.user_type == 'project Admin'
+    },
 
     },
 

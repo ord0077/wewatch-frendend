@@ -34,7 +34,7 @@
 
     </template>
 
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:item.actions="{ item }" v-if="!isProjectAdmin" >
       <!-- <v-icon
         small
         class="mr-2"
@@ -89,7 +89,7 @@
 
 
 
-        { text: 'Delete', value: 'actions', sortable: false },
+        { text: 'Action', value: 'actions', sortable: false },
 
       ],
       data: [],
@@ -101,6 +101,10 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
+
+      isProjectAdmin () {
+      return this.$auth.user && this.$auth.user.user_type == 'project Admin'
+    },
 
     },
 

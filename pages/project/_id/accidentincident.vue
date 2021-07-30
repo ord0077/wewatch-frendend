@@ -56,15 +56,16 @@
 
 
 
-    <template v-slot:item.actions="{ item }">
-      <!-- <v-icon
+    <template v-slot:item.actions="{ item } " v-if="!isProjectAdmin" >
+      <v-icon
         small
         class="mr-2"
         @click="editItem(item)"
       >
         mdi-pencil
-      </v-icon> -->
+      </v-icon>
       <v-icon
+
         small
         @click="deleteItem(item)"
       >
@@ -154,8 +155,7 @@
         },
 
 
-
-        { text: 'Delete', value: 'actions', sortable: false },
+        { text: 'Actions', value: 'actions', sortable: false },
 
       ],
       data: [],
@@ -165,6 +165,10 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
+
+        isProjectAdmin () {
+      return this.$auth.user && this.$auth.user.user_type == 'project Admin'
+    },
 
     },
 

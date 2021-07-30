@@ -32,7 +32,7 @@
     <!-- <template v-slot:item.ser="{ item }">
       {{ ser += 1 }}
     </template> -->
-    <template v-slot:item.actions="{ item }">
+    <template v-slot:item.actions="{ item }" v-if="!isProjectAdmin">
       <v-icon
         small
         @click="deleteItem(item)"
@@ -89,7 +89,7 @@
         },
 
 
-        { text: 'Delete', value: 'actions', sortable: false },
+        { text: 'Actions', value: 'actions', sortable: false},
 
       ],
       data: [],
@@ -99,6 +99,9 @@
       formTitle () {
         return this.editedIndex === -1 ? 'New' : 'Edit'
       },
+      isProjectAdmin () {
+      return this.$auth.user && this.$auth.user.user_type == 'project Admin'
+    },
 
     },
 
@@ -113,6 +116,8 @@
             });
 
       },
+
+
 
       deleteItem (item) {
 

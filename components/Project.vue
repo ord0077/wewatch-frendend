@@ -23,7 +23,7 @@
       ></v-divider>
       <v-dialog v-model="dialog" max-width="900px">
         <template v-slot:activator="{ on }">
-          <v-btn small dark class="secondary mb-2" v-on="on">Add {{entity}} </v-btn>
+          <v-btn v-if="!isProjectAdmin" small dark class="secondary mb-2" v-on="on">Add {{entity}} </v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -262,7 +262,7 @@
     </div>
   </template>
   <template v-slot:item.actions="{ item }">
-    <v-icon
+    <v-icon v-if="!isProjectAdmin"
       small
       class="mr-2"
       @click="editItem(item)"
@@ -435,7 +435,7 @@ export default {
 
     },
     initialize () {
-         
+
          this.getData();
          this.getClients();
 
