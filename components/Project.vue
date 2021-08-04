@@ -277,12 +277,12 @@
       >
       mdi-eye
       </v-icon>
-    <!-- <v-icon
+    <v-icon
       small
       @click="deleteItem(item)"
     >
       mdi-delete
-    </v-icon> -->
+    </v-icon>
 
   </template>
 
