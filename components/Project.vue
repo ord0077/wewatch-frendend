@@ -277,7 +277,7 @@
       >
       mdi-eye
       </v-icon>
-    <v-icon
+    <v-icon v-if="!isProjectAdmin"
       small
       @click="deleteItem(item)"
     >
