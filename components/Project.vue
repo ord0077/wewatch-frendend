@@ -23,7 +23,7 @@
       ></v-divider>
       <v-dialog v-model="dialog" max-width="900px">
         <template v-slot:activator="{ on }">
-          <v-btn v-if="!isProjectAdmin" small dark class="secondary mb-2" v-on="on">Add {{entity}} </v-btn>
+          <v-btn v-if="!isProjectAdmin || !isManager" small dark class="secondary mb-2" v-on="on">Add {{entity}} </v-btn>
         </template>
         <v-card>
           <v-card-title>
@@ -277,12 +277,12 @@
       >
       mdi-eye
       </v-icon>
-    <v-icon v-if="!isProjectAdmin"
+    <!-- <v-icon v-if="!isProjectAdmin"
       small
       @click="deleteItem(item)"
     >
       mdi-delete
-    </v-icon>
+    </v-icon> -->
 
   </template>
 
