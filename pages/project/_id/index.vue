@@ -63,7 +63,7 @@
   <v-row>
 
   <v-col cols="12" sm="12" md="6">
-        <DoughnutChart style="display:none" v-if="loaded" :data="data" :options="options" :height="200" />
+        <DoughnutChart v-if="loaded" :data="data" :options="options" :height="200" />
   </v-col>
   <v-col cols="12" sm="12" md="6">
         <LineChart v-if="loaded" :data="data" :options="options"  :height="200" />
