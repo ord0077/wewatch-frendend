@@ -66,13 +66,13 @@
         <DoughnutChart v-if="loaded" :data="data" :options="options" :height="200" />
   </v-col>
   <v-col cols="12" sm="12" md="6">
-        <LineChart v-if="loaded" :data="data" :options="options"  :height="200" />
+        <LineChart v-if="loaded" :data="data" :options="options"  :height="300" />
   </v-col>
   <v-col cols="12" sm="12" md="6">
         <PieChart v-if="loaded" :data="data" :options="options"  :height="200" />
   </v-col>
   <v-col cols="12" sm="12" md="6">
-        <BarChart v-if="loaded" :data="data" :options="options"  :height="200" />
+        <BarChart v-if="loaded" :data="data" :options="options"  :height="300" />
   </v-col>
 </v-row>
 
