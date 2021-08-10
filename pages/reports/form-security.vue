@@ -1,49 +1,83 @@
 <template>
+
+
 <v-form  ref="form">
 <v-container>
-
-<v-card class="mt-5">
-<v-toolbar flat class="primary" dark>
-   <h3>Daily Security Report</h3>
-   <v-spacer></v-spacer>
-   <v-btn to="/reports/dsr-list" color="secondary" small>DSR List</v-btn>
-</v-toolbar>
-</v-card>
-
-<v-card>
-   <center class="mt-4"><h1>Daily Security Report</h1></center>
-  <v-col cols="12" md="12">
-    <p class="font-weight-bold">Event/Project</p>
+     <v-row  style="flex-direction: row-reverse;">
 
 
-      <v-autocomplete
+    <v-col
+      cols="4"
+      sm="2"
+
+    >
+      <v-img
+
+      width="225px"
+
+        :src="require('/static/certificate/Logo3.jpg')"
+
+
+      ></v-img>
+    </v-col>
+
+       <v-col
+
+      cols="4"
+      sm="2"
+
+    >
+      <v-img width="225px"
+
+        :src="require('/static/certificate/Logo2.jpg')"
+      ></v-img>
+    </v-col>
+
+       <v-col
+
+      cols="4"
+      sm="2"
+
+    >
+      <v-img
+      width="225px"
+
+        :src="require('/static/certificate/Logo1.jpg')"
+
+
+      ></v-img>
+
+        <div class="fill-height repeating-gradient"></div>
+    </v-col>
+  </v-row>
+<v-card height="450" class="mt-5 rounded_section">
+  <v-card height="100" width="400" class="heading">
+    <center><h1>DAILY SECURITY REPORT</h1></center>
+  </v-card>
+
+  <v-spacer></v-spacer>
+
+  <p class="font-weight-bold" style="font-size:25px">Event/Project</p>
+
+  <v-autocomplete
       :rules="Rules"
       v-model="project_id"
       @change="getRecipientList"
       :items="projects"
       required
       item-text="project_name"
-      item-value="id"
+      item-value="project_logo"
       single-line
       auto
       label="Project">
       </v-autocomplete>
 
+      <v-img contain width="150" v-bind:src='project_id'></v-img>
+      <br>
+      <ion-text hide-details readonly v-model="today">{{today}}  </ion-text>
 
-  </v-col>
-<!--
-  <v-col cols="12" md="12"><EmailList :recipientList="recipientList" /></v-col> -->
+</v-card>
 
-
-<v-col cols="12" md="12">
-<p class="font-weight-bold">Current Date</p>
-<v-text-field readonly v-model="today" required></v-text-field>
-</v-col>
-
-<!-- <v-col cols="12" md="12">
-  <p class="font-weight-bold">Description Confidential</p>
-  <v-textarea v-model="description_confidential" label="write your answer" required></v-textarea>
-</v-col> -->
 
 
 <v-col cols="12" md="12">
@@ -450,6 +484,7 @@ export default {
 data: () => ({
 
         project_id :"",
+        projectLogo:null,
         user_id :"",
         description_confidential : "",
         daily_situation_summary : "",
@@ -489,7 +524,11 @@ data: () => ({
 
 
 
+
+
         loader : false,
+
+
 
 
 
@@ -506,6 +545,12 @@ methods : {
   add_loop6 () {
       this.loop6.push({near_miss_activites : '', near_miss_occurrence : '', near_miss_remarks : ''})
     },
+
+
+
+
+
+
 
 
   deleteLoop1 (i) { this.loop1.splice(i, 1) },
@@ -543,9 +588,17 @@ methods : {
 
 
   getRecipientList () {
+
+
     this.$axios.get(`recipient/${this.project_id}`)
       .then(res => (this.recipientList = res.data));
+
   },
+
+
+
+
+
 
   save () {
 
@@ -581,6 +634,7 @@ methods : {
               total_lost_work_hours : this.total_lost_work_hours,
 
               near_miss_activities : this.loop6,
+
 
 
 
@@ -634,5 +688,60 @@ background:#2d57a3;
 color: white !important;
 width:250px ;
 }
+
+.rounded-card{
+    border-radius:25px;
+    background-color: #eee;
+    height:300px !important;
+}
+.height-card{
+      height: 77px !important;
+      border-radius:15px;
+      width:600px;
+      bottom: 140px;
+}
+
+h1.primary--text {
+    padding: 0px 0px 26px 0px;
+    text-align:center;
+}
+
+.auto{
+    text-align: center;
+}
+
+.border-line{
+
+  border:none !important;
+  text-align: center !important;
+}
+
+.rounded_section{
+  background-color:#eee;
+  border-radius: 25px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heading{
+  background-color: #fff;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  text-transform: uppercase;
+}
+
+.heading h1{
+    color: #315aa5;
+    text-transform: uppercase;
+}
+
+
+
 
 </style>
