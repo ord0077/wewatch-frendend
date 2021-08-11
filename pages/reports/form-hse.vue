@@ -1,53 +1,38 @@
 <template>
 <v-form  ref="form">
 <v-container>
-     <v-row  style="flex-direction: row-reverse;">
+     <v-row  style="flex-direction: row;">
+       <v-col cols="12" sm="3" md="5">
+        <v-img contain width="250"
+        :src="require('/static/logopdf.png')"
+        style="margin:0 5px">
+        </v-img>
+       </v-col>
 
+       <v-col cols="12" sm="3" md="1">
+       </v-col>
 
-    <v-col
-      cols="4"
-      sm="2"
-
-    >
-      <v-img
-
-      width="225px"
-
-        :src="require('/static/certificate/Logo3.jpg')"
-
-
-      ></v-img>
-    </v-col>
-
-       <v-col
-
-      cols="4"
-      sm="2"
-
-    >
-      <v-img width="225px"
-
-        :src="require('/static/certificate/Logo2.jpg')"
-      ></v-img>
-    </v-col>
-
-       <v-col
-
-      cols="4"
-      sm="2"
-
-    >
-      <v-img
-      width="225px"
-
+       <v-col cols="4" sm="2" md="2" >
+        <v-img contain width="150"
         :src="require('/static/certificate/Logo1.jpg')"
+        style="margin:0 5px">
+        </v-img>
+       </v-col>
 
+       <v-col cols="4" sm="2" md="2">
+        <v-img contain width="150"
+        :src="require('/static/certificate/Logo2.jpg')"
+        style="margin:0 5px">
+        </v-img>
+       </v-col>
 
-      ></v-img>
-
-        <div class="fill-height repeating-gradient"></div>
-    </v-col>
-  </v-row>
+       <v-col cols="4" sm="2" md="2">
+        <v-img contain width="150"
+        :src="require('/static/certificate/Logo3.jpg')"
+        style="margin:0 5px">
+        </v-img>
+       </v-col>
+      </v-row>
 <v-card height="450" class="mt-5 rounded_section">
   <v-card height="100" width="400" class="heading">
     <center><h1>Daily HSE Report</h1></center>
@@ -830,7 +815,7 @@ width:250px ;
 }
 
 .rounded_section{
-  background-color:#eee;
+  background-color:#fdf3e7;
   border-radius: 25px;
   padding: 20px;
   display: flex;
