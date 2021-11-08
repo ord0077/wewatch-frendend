@@ -35,6 +35,19 @@
     <template v-slot:item.actions="{ item }" v-if="!isProjectAdmin">
       <v-icon
         small
+        @click="viewItem(item)"
+        >
+        mdi-eye
+        </v-icon>
+
+        <v-icon
+        small
+        @click="editItem(item)"
+        >
+        mdi-pencil
+        </v-icon>
+      <v-icon
+        small
         @click="deleteItem(item)"
       >
         mdi-delete
@@ -118,6 +131,17 @@
       },
 
 
+      editItem(item) {
+      this.editedIndex = this.data.data.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.errors = [];
+      this.dialog = true;
+      this.action = "Edit";
+    },
+
+    viewItem (item) {
+        this.$router.push(`/observation/${item.id}/`);
+      },
 
       deleteItem (item) {
 
