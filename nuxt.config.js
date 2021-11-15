@@ -52,7 +52,7 @@ export default {
     axios: {
         // baseURL: 'http://localhost:8000/api/',
         // baseURL: 'https://powerful-beach-80053.herokuapp.com/api/',
-        baseURL: 'http://wewatch.dev-ord.tk/api/'
+        baseURL: 'https://wewatch.dev-ord.tk/api/'
     },
     auth: {
 
